@@ -26,7 +26,7 @@ character. Calm, precise, politely unsettling.
     "leal-labs": {
       "source": {
         "source": "github",
-        "repo": "daveleal/claude-plugins"
+        "repo": "davesleal/claude-plugins"
       }
     }
   }
@@ -103,7 +103,7 @@ repository. Check the model's repository for its licensing terms.
 
 ## Credits
 
-Created by [Dave Leal](https://github.com/daveleal) / Leal Labs.
+Created by [Dave Leal](https://github.com/davesleal) / Leal Labs.
 
 Built with [Piper TTS](https://github.com/rhasspy/piper) by Michael Hansen.
 

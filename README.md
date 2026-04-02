@@ -1,6 +1,6 @@
 # Leal Labs — Claude Code Plugins
 
-Plugins for Claude Code by [Leal Labs](https://github.com/daveleal).
+Plugins for Claude Code by [Leal Labs](https://github.com/davesleal).
 
 ## Plugins
 
@@ -18,7 +18,7 @@ Add to `~/.claude/settings.json`:
     "leal-labs": {
       "source": {
         "source": "github",
-        "repo": "daveleal/claude-plugins"
+        "repo": "davesleal/claude-plugins"
       }
     }
   }
