@@ -1143,5 +1143,52 @@
     </div>
   </footer>
 
+  <script>
+    // Smooth scroll for install button
+    document.querySelectorAll('a[href="#installation"]').forEach(function(a) {
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('installation').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // HAL voice greeting via Web Audio API
+    (function() {
+      var played = false;
+      var playBtn = document.getElementById('play-label');
+      var housing = document.querySelector('.hal-housing');
+
+      function playGreeting() {
+        if (played) return;
+        played = true;
+        playBtn.textContent = '\u25CF Playing\u2026';
+        playBtn.style.color = 'rgba(255,100,100,0.7)';
+
+        fetch('hal-greeting.wav')
+          .then(function(r) { return r.arrayBuffer(); })
+          .then(function(buf) {
+            var ctx = new (window.AudioContext || window.webkitAudioContext)();
+            return ctx.decodeAudioData(buf).then(function(decoded) {
+              var source = ctx.createBufferSource();
+              source.buffer = decoded;
+              source.connect(ctx.destination);
+              source.start(0);
+              source.onended = function() {
+                playBtn.textContent = '\u2713 HAL has spoken';
+                playBtn.style.color = 'rgba(255,100,100,0.3)';
+              };
+            });
+          })
+          .catch(function() {
+            playBtn.textContent = '\u25B6 Click to hear HAL speak';
+            playBtn.style.color = 'rgba(255,100,100,0.35)';
+            played = false;
+          });
+      }
+
+      playBtn.addEventListener('click', playGreeting);
+      housing.addEventListener('click', playGreeting);
+    })();
+  </script>
 </body>
 </html>
