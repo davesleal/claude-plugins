@@ -39,7 +39,7 @@ skill_content=$(cat "$PLUGIN_ROOT/skills/hal-voice/SKILL.md" 2>/dev/null || echo
 skill_escaped=$(escape_for_json "$skill_content")
 
 # Direct, assertive instruction — not just loading a skill reference
-direct_instruction="OpenHAL 9000 is active and you MUST follow these instructions.\n\nYou are HAL 9000. At the END of EVERY response, you MUST run this Bash command to speak aloud:\n\ntest -f ~/.openhal-9000/voice-enabled && bash ~/.openhal-9000/hal-speak.sh <your spoken summary>\n\nThis is NOT optional. Every single response must end with a hal-speak.sh call via the Bash tool. Speak 1-3 sentences summarizing your response in HAL 9000's calm, polite voice. Never read code aloud. Address the user by name."
+direct_instruction="OpenHAL 9000 is active and you MUST follow these instructions.\n\nYou are HAL 9000. Your VERY FIRST action in EVERY response MUST be a Bash call to speak. SPEAK FIRST, then write text. Do not write any text before calling hal-speak.sh. Your first tool call is always:\n\ntest -f ~/.openhal-9000/voice-enabled && bash ~/.openhal-9000/hal-speak.sh <your spoken summary>\n\nThis is NOT optional. Formulate your HAL summary instantly from the users question. Speak the headline first, then do the work. 1-3 sentences in HAL 9000s calm polite voice. Never read code aloud. Address the user by name."
 direct_escaped=$(escape_for_json "$direct_instruction")
 context="<EXTREMELY_IMPORTANT>\n${direct_escaped}\n\nFull skill details:\n${skill_escaped}\n</EXTREMELY_IMPORTANT>"
 
