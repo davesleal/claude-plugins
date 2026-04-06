@@ -7,9 +7,6 @@
   <meta name="theme-color" content="#cc2222">
   <title>OpenHAL 9000</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23cc2222'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ffcc33'/%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   <style>
     /* ── Reset & Base ─────────────────────────────── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,1139 +18,887 @@
     }
 
     body {
-      background: #000;
-      color: #e0e0e0;
-      font-family: 'Familjen Grotesk', 'Futura', 'Avenir Next', sans-serif;
+      background: #1a1a1a;
+      color: #d0d0d0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 17px;
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* ── Shared ────────────────────────────────────── */
-    .section-label {
-      font-size: 11px;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      font-weight: 600;
-      color: rgba(255, 60, 60, 0.65);
-      margin-bottom: 40px;
+    .mono { font-family: 'Courier New', monospace; }
+
+    /* ── HAL Eye Animations ───────────────────────── */
+    @keyframes hal-bg-animation {
+      0%   { filter: saturate(0.5); }
+      50%  { filter: saturate(1.2); }
+      100% { filter: saturate(0.5); }
     }
 
-    .section-divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(204, 34, 34, 0.3), transparent);
+    @keyframes hal-eye-animation {
+      0%   { box-shadow: 0 0 12px 4px rgba(255,224,108,0.8), 0 0 20px 8px rgba(255,40,0,0.4); }
+      25%  { box-shadow: 2px 1px 14px 5px rgba(255,224,108,0.9), 0 0 24px 10px rgba(255,40,0,0.5); }
+      50%  { box-shadow: -1px 2px 10px 3px rgba(255,224,108,0.7), 0 0 18px 6px rgba(255,40,0,0.35); }
+      75%  { box-shadow: 1px -1px 16px 6px rgba(255,224,108,1.0), 0 0 28px 12px rgba(255,40,0,0.55); }
+      100% { box-shadow: 0 0 12px 4px rgba(255,224,108,0.8), 0 0 20px 8px rgba(255,40,0,0.4); }
     }
 
-    .mono {
-      font-family: 'Courier New', monospace;
-    }
-
-    /* ── Animations ────────────────────────────────── */
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
 
-    @keyframes eyePulse {
-      0%, 100% { box-shadow: 0 0 40px rgba(255, 34, 0, 0.5), 0 0 80px rgba(255, 34, 0, 0.2); }
-      50% { box-shadow: 0 0 50px rgba(255, 34, 0, 0.6), 0 0 100px rgba(255, 34, 0, 0.3); }
-    }
-
-    /* ── Section 1: Hero ──────────────────────────── */
-    .hero {
-      min-height: 100vh;
+    /* ── HAL Housing (Ryan LaBar style) ───────────── */
+    .hal-housing {
+      width: 208px;
+      height: 618px;
+      background: linear-gradient(180deg, #AEAEAE 0%, #787878 12%, #717171 100%);
+      border-radius: 10px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       position: relative;
-      background: radial-gradient(ellipse at center, rgba(80, 0, 0, 0.25) 0%, #000 70%);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .hal-housing-inner {
+      width: 200px;
+      height: 610px;
+      background: #1E1E1E;
+      border-radius: 6px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Nameplate */
+    .hal-nameplate {
+      width: 160px;
+      height: 28px;
+      margin-top: 20px;
+      border: 2px solid #aaa;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hal-nameplate::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 50%;
+      background: #30667C;
+    }
+
+    .hal-nameplate span {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      text-align: center;
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+
+    /* Eye socket area */
+    .hal-eye-socket {
+      margin-top: 60px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #C5ACAC 0%, #B1A8A8 34%, #564D4D 50%, #3F3535 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hal-eye-socket-inner {
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #3F3535 0%, #564D4D 50%, #B1A8A8 66%, #C5ACAC 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* HAL Eye Lens (Giana style) */
+    .hal-eye {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(150deg, #ced6d8 0%, #222127 100%);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hal-eye-ring {
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      background: linear-gradient(150deg, #4f565d 0%, #161314 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hal-eye-lens {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, #d80018 0%, #9c0109 20%, #000 60%, #000 100%);
+      animation: hal-bg-animation 3.4s infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
       overflow: hidden;
     }
 
-    .hero::before {
+    /* Lens reflections */
+    .hal-eye-lens::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.08) 2px,
-        rgba(0, 0, 0, 0.08) 4px
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center,
+        transparent 0%, transparent 18%,
+        rgba(255,255,255,0.03) 19%, rgba(255,255,255,0.03) 22%,
+        transparent 23%, transparent 34%,
+        rgba(255,255,255,0.04) 35%, rgba(255,255,255,0.04) 37%,
+        transparent 38%, transparent 48%,
+        rgba(255,255,255,0.03) 49%, rgba(255,255,255,0.03) 51%,
+        transparent 52%
       );
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .hero-content {
-      position: relative;
+      transform: perspective(40px) rotateX(5deg);
       z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 32px;
     }
 
-    /* HAL Eye Housing — rectangular like the real film prop */
-    .hal-housing {
-      width: 200px;
-      height: 340px;
-      background: linear-gradient(180deg, #2e2e32 0%, #222226 50%, #1a1a1e 100%);
-      border-radius: 4px;
+    .hal-eye-lens::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center,
+        transparent 0%, transparent 24%,
+        rgba(255,200,200,0.05) 25%, rgba(255,200,200,0.05) 28%,
+        transparent 29%, transparent 42%,
+        rgba(255,200,200,0.04) 43%, rgba(255,200,200,0.04) 45%,
+        transparent 46%
+      );
+      transform: perspective(40px) rotateX(-5deg) rotateY(3deg);
+      z-index: 2;
+    }
+
+    .hal-eye-pupil {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, #fff0fc 0%, #ffe091 20%, #ffe26c 45%, #fdd247 100%);
+      animation: hal-eye-animation 4.5s infinite;
       position: relative;
+      z-index: 3;
+    }
+
+    /* Speaker grille */
+    .hal-speaker {
+      position: absolute;
+      bottom: 20px;
+      width: 160px;
+      height: 136px;
+      background: #727272;
+      border-radius: 4px;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 3px, #555 3px, #555 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, #555 3px, #555 4px);
+      background-size: 4px 4px;
+    }
+
+    /* ── Hero Section ─────────────────────────────── */
+    .hero {
+      min-height: 80vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(255, 255, 255, 0.05),
-        0 0 0 3px #111,
-        0 0 0 4px rgba(255, 255, 255, 0.03),
-        0 20px 60px rgba(0, 0, 0, 0.8);
-    }
-
-    /* Screw details */
-    .hal-housing::before,
-    .hal-housing::after {
-      content: '';
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #555 0%, #333 60%, #222 100%);
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    }
-    .hal-housing::before { top: 16px; left: 16px; }
-    .hal-housing::after { top: 16px; right: 16px; left: auto; }
-
-    .housing-screw-bl,
-    .housing-screw-br {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #555 0%, #333 60%, #222 100%);
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
-    }
-    .housing-screw-bl { bottom: 16px; left: 16px; }
-    .housing-screw-br { bottom: 16px; right: 16px; }
-
-    /* HAL status display */
-    .hal-status-display {
-      position: absolute;
-      top: 55px;
-      font-family: 'Courier New', monospace;
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: #4a9eff;
-      text-transform: uppercase;
-      text-align: center;
-      text-shadow: 0 0 6px rgba(74, 158, 255, 0.6);
-    }
-
-    /* HAL Eye */
-    .hal-eye-container {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
       position: relative;
-      margin-top: 10px;
-      /* Silver bezel ring like the real prop */
-      box-shadow:
-        0 0 0 4px #444,
-        0 0 0 5px #666,
-        0 0 0 8px #333,
-        0 0 0 9px rgba(255,255,255,0.08),
-        0 0 30px rgba(255,0,0,0.2);
-      background: radial-gradient(circle, transparent 48%, #222 50%, #444 52%, #333 56%, #1a1a1e 60%);
+      background: radial-gradient(ellipse at center, rgba(60, 20, 20, 0.3) 0%, #1a1a1a 70%);
+      padding: 60px 20px 40px;
     }
 
-    .hal-eye {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: radial-gradient(
-        circle,
-        #ffee55 0%,
-        #ffcc22 15%,
-        #ff6600 35%,
-        #ff2200 55%,
-        #cc1100 70%,
-        #660000 90%,
-        #330000 100%
-      );
-      position: relative;
-      animation: eyePulse 4s ease-in-out infinite;
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
     }
 
-    /* Lens rings */
-    .hal-eye::before {
-      content: '';
-      position: absolute;
-      inset: 8px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 200, 100, 0.15);
-      box-shadow:
-        inset 0 0 20px rgba(255, 100, 0, 0.2),
-        0 0 0 4px rgba(255, 100, 0, 0.05);
-    }
-
-    .hal-eye::after {
-      content: '';
-      position: absolute;
-      inset: 20px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 200, 100, 0.1);
-    }
-
-    /* Specular highlight */
-    .hal-eye-highlight {
-      position: absolute;
-      top: 22px;
-      left: 30px;
-      width: 24px;
-      height: 16px;
-      border-radius: 50%;
-      background: radial-gradient(
-        ellipse,
-        rgba(255, 255, 255, 0.45) 0%,
-        rgba(255, 255, 255, 0.1) 50%,
-        transparent 100%
-      );
-      transform: rotate(-20deg);
-    }
-
-    .hal-eye-inner-ring {
-      position: absolute;
-      inset: 35px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 180, 50, 0.12);
-    }
-
-    /* Play label */
-    .play-label {
-      font-size: 13px;
-      color: rgba(255, 100, 100, 0.5);
-      letter-spacing: 2px;
-      cursor: pointer;
-      transition: color 0.3s;
-      margin-top: 8px;
-    }
-    .play-label:hover {
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    /* Hero text */
     .hero-title {
       font-size: 42px;
       font-weight: 700;
-      letter-spacing: 14px;
-      text-transform: uppercase;
       color: #fff;
+      letter-spacing: 4px;
+      text-transform: uppercase;
       text-align: center;
     }
 
     .hero-tagline {
       font-size: 18px;
-      font-style: italic;
-      color: rgba(255, 255, 255, 0.65);
+      color: #bbb;
       text-align: center;
-      max-width: 500px;
+      max-width: 480px;
+      line-height: 1.5;
     }
 
-    .ghost-btn {
-      display: inline-block;
-      padding: 14px 48px;
-      border: 1px solid rgba(255, 60, 60, 0.35);
-      color: rgba(255, 60, 60, 0.8);
-      font-family: 'Familjen Grotesk', 'Futura', 'Avenir Next', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      text-decoration: none;
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .ghost-btn:hover {
-      background: rgba(255, 60, 60, 0.08);
-      border-color: rgba(255, 60, 60, 0.6);
-      color: rgba(255, 60, 60, 1);
-    }
-
-    .ghost-btn--muted {
-      border-color: rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.4);
-    }
-    .ghost-btn--muted:hover {
-      border-color: rgba(255, 255, 255, 0.35);
-      color: rgba(255, 255, 255, 0.7);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    /* ── Section 2: Systems Operational ────────────── */
-    .systems {
-      min-height: 100vh;
+    .hero-actions {
       display: flex;
-      flex-direction: column;
+      gap: 16px;
       align-items: center;
+      flex-wrap: wrap;
       justify-content: center;
-      padding: 80px 40px;
     }
 
-    .systems-container {
+    .btn-play {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(204, 34, 34, 0.15);
+      border: 1px solid rgba(204, 34, 34, 0.5);
+      border-radius: 6px;
+      color: #e05050;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-play:hover {
+      background: rgba(204, 34, 34, 0.25);
+      border-color: rgba(204, 34, 34, 0.7);
+    }
+
+    .btn-play .play-icon {
+      width: 0;
+      height: 0;
+      border-left: 8px solid #e05050;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+
+    .btn-install {
+      display: inline-block;
+      padding: 10px 28px;
+      background: transparent;
+      border: 1px solid #555;
+      border-radius: 6px;
+      color: #ccc;
+      font-size: 15px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-install:hover {
+      border-color: #888;
+      color: #fff;
+    }
+
+    /* ── Section Shared ───────────────────────────── */
+    section {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-divider {
       width: 100%;
       max-width: 900px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .system-row {
-      display: flex;
-      height: 72px;
-      overflow: hidden;
-    }
-
-    .system-label {
-      width: 200px;
-      min-width: 200px;
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #fff;
-    }
-
-    .system-label--red { background: rgba(204, 34, 34, 0.8); }
-    .system-label--cyan { background: rgba(0, 180, 220, 0.7); }
-    .system-label--green { background: rgba(0, 180, 80, 0.7); }
-    .system-label--amber { background: rgba(200, 160, 0, 0.7); }
-
-    .system-readout {
-      flex: 1;
-      background: #0a0a0a;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-    }
-
-    /* Colored grid overlay */
-    .system-readout::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      opacity: 0.06;
-      pointer-events: none;
-    }
-    .system-row--red .system-readout::before {
-      background: repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(204, 34, 34, 0.5) 19px, rgba(204, 34, 34, 0.5) 20px),
-                  repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(204, 34, 34, 0.5) 19px, rgba(204, 34, 34, 0.5) 20px);
-    }
-    .system-row--cyan .system-readout::before {
-      background: repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(0, 180, 220, 0.5) 19px, rgba(0, 180, 220, 0.5) 20px),
-                  repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0, 180, 220, 0.5) 19px, rgba(0, 180, 220, 0.5) 20px);
-    }
-    .system-row--green .system-readout::before {
-      background: repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(0, 180, 80, 0.5) 19px, rgba(0, 180, 80, 0.5) 20px),
-                  repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0, 180, 80, 0.5) 19px, rgba(0, 180, 80, 0.5) 20px);
-    }
-    .system-row--amber .system-readout::before {
-      background: repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(200, 160, 0, 0.5) 19px, rgba(200, 160, 0, 0.5) 20px),
-                  repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(200, 160, 0, 0.5) 19px, rgba(200, 160, 0, 0.5) 20px);
-    }
-
-
-    .system-value {
-      position: absolute;
-      right: 20px;
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-      letter-spacing: 2px;
-      z-index: 2;
-    }
-
-    .system-value--red { color: rgba(204, 34, 34, 0.9); }
-    .system-value--cyan { color: rgba(0, 200, 240, 0.9); }
-    .system-value--green { color: rgba(0, 220, 100, 0.9); }
-    .system-value--amber { color: rgba(220, 180, 0, 0.9); }
-
-    /* ── Section 3: Blue Diagnostic Screen ─────────── */
-    .diagnostic {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 80px 40px;
-    }
-
-    .diagnostic-screen {
-      width: 100%;
-      max-width: 680px;
-      background: linear-gradient(180deg, #0a1a3a 0%, #0d1f42 100%);
-      border-radius: 8px;
-      padding: 48px 40px;
-      position: relative;
-      overflow: hidden;
-      box-shadow:
-        0 0 80px rgba(30, 80, 180, 0.15),
-        inset 0 0 120px rgba(30, 80, 180, 0.08);
-    }
-
-    /* CRT scan lines */
-    .diagnostic-screen::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.12) 2px,
-        rgba(0, 0, 0, 0.12) 4px
-      );
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Radial glow */
-    .diagnostic-screen::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, rgba(40, 100, 200, 0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .diagnostic-title {
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-      letter-spacing: 3px;
-      color: rgba(120, 180, 255, 0.7);
-      text-transform: uppercase;
-      margin-bottom: 36px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .diagnostic-line {
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
-      line-height: 2.2;
-      color: rgba(160, 200, 255, 0.85);
-      position: relative;
-      z-index: 2;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .diagnostic-key {
-      color: rgba(100, 160, 240, 0.6);
-    }
-
-    .diagnostic-val {
-      color: rgba(180, 210, 255, 0.9);
-    }
-
-    .diagnostic-cursor {
-      display: inline-block;
-      width: 8px;
-      height: 16px;
-      background: rgba(120, 180, 255, 0.7);
-      animation: blink 1s step-end infinite;
-      vertical-align: middle;
-      margin-left: 4px;
-    }
-
-    /* ── Section 4: Logic Memory Center ────────────── */
-    .logic-memory {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 80px 40px;
-    }
-
-    .metal-panel {
-      width: 100%;
-      max-width: 700px;
-      background: linear-gradient(180deg, #d0d0d0 0%, #b8b8b8 100%);
-      border-radius: 4px;
-      padding: 36px 32px;
-      position: relative;
-      box-shadow:
-        0 2px 0 rgba(255, 255, 255, 0.3),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.15),
-        0 20px 60px rgba(0, 0, 0, 0.6);
-    }
-
-    /* Panel screws */
-    .panel-screw {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #aaa 0%, #888 50%, #666 100%);
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
-    }
-    .panel-screw::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 6px;
       height: 1px;
-      background: rgba(0, 0, 0, 0.3);
-      transform: translate(-50%, -50%) rotate(35deg);
-    }
-    .panel-screw--tl { top: 12px; left: 12px; }
-    .panel-screw--tr { top: 12px; right: 12px; }
-    .panel-screw--bl { bottom: 12px; left: 12px; }
-    .panel-screw--br { bottom: 12px; right: 12px; }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 28px;
-      padding: 0 8px;
+      margin: 0 auto;
+      background: linear-gradient(90deg, transparent, rgba(204, 34, 34, 0.25), transparent);
     }
 
-    .panel-header-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #444;
-    }
-
-    .panel-badge {
-      font-family: 'Courier New', monospace;
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: #fff;
-      background: #2a5daa;
-      padding: 4px 12px;
-      border-radius: 2px;
-      text-transform: uppercase;
-    }
-
-    .panel-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px;
-    }
-
-    .panel-cell {
-      border: 2px solid #aa2222;
-      padding: 28px 20px;
-      text-align: center;
-    }
-
-    .panel-cell--filled {
-      background: #bb2222;
-      color: #fff;
-    }
-
-    .panel-cell--empty {
-      background: transparent;
-      color: #333;
-    }
-
-    .panel-cell-title {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    .panel-cell-sub {
+    .section-label {
       font-size: 11px;
-      margin-top: 6px;
-      opacity: 0.7;
-      letter-spacing: 1px;
-    }
-
-    /* Memory Terminal Bars */
-    .memory-bars {
-      width: 100%;
-      max-width: 700px;
-      margin-top: 24px;
-      background: #aa2222;
-      border-radius: 3px;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .memory-bar-group {
-      display: flex;
-      gap: 3px;
-      align-items: center;
-    }
-
-    .memory-bar-group-label {
-      font-family: 'Courier New', monospace;
-      font-size: 8px;
-      color: rgba(255, 255, 255, 0.6);
-      letter-spacing: 1px;
-      margin-right: 4px;
-    }
-
-    .memory-bar {
-      width: 8px;
-      height: 32px;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 1px;
-    }
-
-    .memory-bar--dim {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    .memory-bar-gap {
-      width: 20px;
-    }
-
-    /* ── Section 5: Installation Sequence ──────────── */
-    .installation {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 80px 40px;
-    }
-
-    .install-container {
-      width: 100%;
-      max-width: 680px;
-    }
-
-    .install-step {
-      margin-bottom: 48px;
-    }
-
-    .install-step-number {
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      color: rgba(255, 60, 60, 0.7);
-      letter-spacing: 3px;
-      margin-bottom: 12px;
-    }
-
-    .install-step-title {
-      font-size: 18px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
       font-weight: 600;
-      color: #e0e0e0;
+      color: #cc4444;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
       margin-bottom: 16px;
     }
 
-    .install-code {
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-      line-height: 1.8;
-      color: rgba(140, 190, 255, 0.9);
-      background: linear-gradient(180deg, #0a1a3a 0%, #0d1f42 100%);
-      border-radius: 6px;
-      padding: 20px 24px;
-      overflow-x: auto;
-      position: relative;
-    }
-
-    .install-code::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.08) 2px,
-        rgba(0, 0, 0, 0.08) 4px
-      );
-      pointer-events: none;
-      border-radius: 6px;
-    }
-
-    .install-step-desc {
-      font-size: 15px;
-      color: rgba(255, 255, 255, 0.6);
+    /* ── What It Does ─────────────────────────────── */
+    .what-it-does p {
+      font-size: 17px;
+      color: #d0d0d0;
+      max-width: 640px;
       line-height: 1.7;
     }
 
-    .install-buttons {
-      display: flex;
+    /* ── Features Grid ────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 16px;
-      margin-top: 48px;
+      margin-top: 24px;
     }
 
-    /* ── Section 6: Footer ─────────────────────────── */
-    .footer {
-      padding: 60px 40px;
+    .feature-card {
+      background: #222;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-card h3 .icon {
+      font-size: 20px;
+      color: #cc4444;
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: #aaa;
+      line-height: 1.5;
+    }
+
+    /* ── Logic Memory Center (3D CSS Room) ─────────── */
+    .lmc-wrapper {
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .lmc-label {
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #cc4444;
       text-align: center;
     }
 
-    .footer-credit {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.35);
-      letter-spacing: 1px;
+    .lmc-room {
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+      perspective: 200px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .footer-disclaimer {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.2);
-      margin-top: 12px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
+    .lmc-room .room-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
     }
 
-    /* ── Responsive: Tablet ────────────────────────── */
+    .lmc-room .wall {
+      position: absolute;
+      background: #1c0001;
+    }
+
+    .lmc-room .back {
+      width: 200px;
+      height: 200px;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(-50%, -50%, -200px);
+      border: 1px solid #360509;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lmc-room .left {
+      width: 300px;
+      height: 300px;
+      left: 0;
+      top: 0;
+      transform-origin: left center;
+      transform: rotateY(90deg);
+      border-right: 1px solid #360509;
+    }
+
+    .lmc-room .right {
+      width: 300px;
+      height: 300px;
+      right: 0;
+      top: 0;
+      transform-origin: right center;
+      transform: rotateY(-90deg);
+      border-left: 1px solid #360509;
+    }
+
+    .lmc-room .top {
+      width: 100%;
+      height: 300px;
+      top: 0;
+      left: 0;
+      transform-origin: top center;
+      transform: rotateX(-90deg);
+      border-bottom: 1px solid #360509;
+    }
+
+    .lmc-room .bottom {
+      width: 100%;
+      height: 300px;
+      bottom: 0;
+      left: 0;
+      transform-origin: bottom center;
+      transform: rotateX(90deg);
+      border-top: 1px solid #360509;
+    }
+
+    /* Server rack dots */
+    .rack {
+      padding: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      justify-content: center;
+      align-content: start;
+    }
+
+    .rack i {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: #360509;
+      border-radius: 1px;
+      font-style: normal;
+    }
+
+    .rack b {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: #ff2630;
+      border-radius: 1px;
+      box-shadow: 0 0 3px rgba(255,38,48,0.6);
+      font-weight: normal;
+    }
+
+    /* Mini HAL eye in center of room */
+    .lmc-hal-eye {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #fff 0%, #fff 5%, #ff2630 8%, red 20%, #000 50%, #000 100%);
+      box-shadow: 0 0 12px rgba(255,38,48,0.5), 0 0 24px rgba(255,0,0,0.3);
+      position: relative;
+    }
+
+    .lmc-hal-eye::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+      top: 12px;
+      left: 20px;
+      opacity: 0.8;
+    }
+
+    /* Monitors in room */
+    .lmc-monitors {
+      display: flex;
+      gap: 6px;
+    }
+
+    .lmc-monitor {
+      width: 30px;
+      height: 22px;
+      background: #0a0a0a;
+      border: 1px solid #360509;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lmc-monitor::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 2px;
+      right: 2px;
+      height: 2px;
+      background: #ff2630;
+      opacity: 0.4;
+    }
+
+    /* ── Installation ─────────────────────────────── */
+    .install-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .install-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 50%;
+      background: rgba(204, 34, 34, 0.15);
+      border: 1px solid rgba(204, 34, 34, 0.4);
+      color: #cc4444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+    }
+
+    .step-content h3 {
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .step-content p {
+      font-size: 15px;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+
+    .code-block {
+      background: #0a1a3a;
+      border: 1px solid #1a2a4a;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #a0c0ff;
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.5;
+    }
+
+    /* ── Footer ────────────────────────────────────── */
+    footer {
+      padding: 40px 20px;
+      text-align: center;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    footer p {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.6;
+    }
+
+    footer a {
+      color: #999;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    footer a:hover { color: #ccc; }
+
+    /* ── Responsive ────────────────────────────────── */
     @media (max-width: 960px) {
       .hal-housing {
-        width: 150px;
-        height: 280px;
+        transform: scale(0.8);
+        transform-origin: center;
       }
-      .hal-eye-container {
-        width: 100px;
-        height: 100px;
+
+      .features-grid {
+        grid-template-columns: 1fr;
       }
+    }
+
+    @media (max-width: 640px) {
+      .hal-housing {
+        transform: scale(0.65);
+        transform-origin: center;
+      }
+
       .hero-title {
-        font-size: 32px;
-        letter-spacing: 10px;
+        font-size: 28px;
+        letter-spacing: 2px;
       }
+
       .hero-tagline {
         font-size: 16px;
       }
-      .system-label {
-        width: 160px;
-        min-width: 160px;
-        font-size: 10px;
-        letter-spacing: 2px;
-        padding: 0 14px;
-      }
-      .diagnostic-screen {
-        padding: 36px 28px;
-      }
-      .diagnostic-line {
-        font-size: 12px;
-      }
-      .metal-panel {
-        padding: 28px 24px;
-      }
-      .panel-cell {
-        padding: 20px 14px;
-      }
-    }
 
-    /* ── Responsive: Mobile ────────────────────────── */
-    @media (max-width: 640px) {
-      .hal-housing {
-        width: 120px;
-        height: 220px;
+      section {
+        padding: 40px 16px;
       }
-      .hal-eye-container {
-        width: 80px;
-        height: 80px;
-      }
-      .hal-status-display {
-        font-size: 7px;
-        top: 42px;
-      }
-      .hal-housing::before { top: 12px; left: 12px; }
-      .hal-housing::after { top: 12px; right: 12px; }
-      .housing-screw-bl { bottom: 12px; left: 12px; }
-      .housing-screw-br { bottom: 12px; right: 12px; }
-      .hero-title {
+
+      h2 {
         font-size: 22px;
-        letter-spacing: 6px;
       }
-      .hero-tagline {
-        font-size: 14px;
-        padding: 0 20px;
-      }
-      .ghost-btn {
-        padding: 12px 32px;
-        font-size: 11px;
-        letter-spacing: 3px;
-      }
-      .systems {
-        padding: 60px 16px;
-      }
-      .system-row {
-        flex-direction: column;
-        height: auto;
-      }
-      .system-label {
-        width: 100%;
-        min-width: 100%;
-        padding: 10px 16px;
-        justify-content: center;
-      }
-      .system-readout {
-        height: 60px;
-      }
-      .diagnostic {
-        padding: 60px 16px;
-      }
-      .diagnostic-screen {
-        padding: 28px 18px;
-      }
-      .diagnostic-line {
-        font-size: 11px;
-        flex-direction: column;
-        line-height: 1.6;
-      }
-      .diagnostic-title {
-        font-size: 11px;
-      }
-      .logic-memory {
-        padding: 60px 16px;
-      }
-      .metal-panel {
-        padding: 24px 16px;
-      }
-      .panel-grid {
-        grid-template-columns: 1fr;
-      }
-      .panel-header {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-      }
-      .panel-cell {
-        padding: 20px 16px;
-      }
-      .memory-bars {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .installation {
-        padding: 60px 16px;
-      }
-      .install-code {
-        font-size: 11px;
-        padding: 16px 14px;
-      }
-      .install-buttons {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .install-buttons .ghost-btn {
-        text-align: center;
+
+      .lmc-room {
+        height: 200px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════════ -->
-  <!-- Section 1: Hero                                -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <section class="hero" id="hero">
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero">
     <div class="hero-content">
 
-      <div class="hal-housing">
-        <span class="housing-screw-bl"></span>
-        <span class="housing-screw-br"></span>
-        <div class="hal-status-display">HAL 9000</div>
-        <div class="hal-eye-container">
-          <div class="hal-eye">
-            <div class="hal-eye-highlight"></div>
-            <div class="hal-eye-inner-ring"></div>
+      <!-- HAL Housing -->
+      <div class="hal-housing" id="hal-housing" title="Click to hear HAL speak">
+        <div class="hal-housing-inner">
+          <div class="hal-nameplate"><span>HAL 9000</span></div>
+          <div class="hal-eye-socket">
+            <div class="hal-eye-socket-inner">
+              <div class="hal-eye">
+                <div class="hal-eye-ring">
+                  <div class="hal-eye-lens">
+                    <div class="hal-eye-pupil"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+          <div class="hal-speaker"></div>
         </div>
       </div>
 
-      <button class="play-label" id="play-label" aria-label="Play HAL 9000 voice greeting">&#9654; Click to hear HAL speak</button>
-
-      <h1 class="hero-title">OPENHAL 9000</h1>
+      <h1 class="hero-title">OpenHAL 9000</h1>
       <p class="hero-tagline">A Claude Code plugin that speaks with the voice of HAL 9000</p>
 
-      <a href="#installation" class="ghost-btn">INSTALL</a>
+      <div class="hero-actions">
+        <button class="btn-play" id="btn-play">
+          <span class="play-icon"></span>
+          Hear HAL Speak
+        </button>
+        <a href="#install" class="btn-install">INSTALL</a>
+      </div>
+
     </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════ WHAT IT DOES ═══════ -->
+  <section class="what-it-does">
+    <div class="section-label">Overview</div>
+    <h2>What It Does</h2>
+    <p>
+      OpenHAL 9000 gives Claude Code a voice. Every response is spoken aloud using macOS native text-to-speech, channeling the calm, measured tone of HAL 9000 from <em>2001: A Space Odyssey</em>. No API keys. No cloud services. Just Claude, speaking to you from your terminal.
+    </p>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ═══════════════════════════════════════════════ -->
-  <!-- Section 2: Systems Operational                 -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <section class="systems" id="systems">
-    <div class="section-label">Systems Operational</div>
-    <div class="systems-container">
-
-      <!-- Voice Synthesis — Red -->
-      <div class="system-row system-row--red">
-        <div class="system-label system-label--red">Voice Synthesis</div>
-        <div class="system-readout">
-          <span class="system-value system-value--red">PIPER-TTS OK</span>
-        </div>
+  <!-- ═══════ FEATURES ═══════ -->
+  <section>
+    <div class="section-label">Capabilities</div>
+    <h2>Features</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3><span class="icon">&gt;</span> Native TTS</h3>
+        <p>Uses macOS built-in speech synthesis. No API keys, no cloud dependency, no latency. Works completely offline.</p>
       </div>
-
-      <!-- Neural Engine — Cyan -->
-      <div class="system-row system-row--cyan">
-        <div class="system-label system-label--cyan">Neural Engine</div>
-        <div class="system-readout">
-          <span class="system-value system-value--cyan">ONNX NOMINAL</span>
-        </div>
+      <div class="feature-card">
+        <h3><span class="icon">&gt;</span> Zero Config</h3>
+        <p>Install the plugin and HAL starts speaking. No setup wizard, no config files to edit, no environment variables to set.</p>
       </div>
-
-      <!-- Audio Pipeline — Red -->
-      <div class="system-row system-row--red">
-        <div class="system-label system-label--red">Audio Pipeline</div>
-        <div class="system-readout">
-          <span class="system-value system-value--red">22050 HZ WAV</span>
-        </div>
+      <div class="feature-card">
+        <h3><span class="icon">&gt;</span> In Character</h3>
+        <p>Every response is spoken in HAL's distinctive cadence. The calm, deliberate delivery that defined a generation of science fiction.</p>
       </div>
-
-      <!-- Systems Integration — Green -->
-      <div class="system-row system-row--green">
-        <div class="system-label system-label--green">Systems Integration</div>
-        <div class="system-readout">
-          <span class="system-value system-value--green">HOOKS ACTIVE</span>
-        </div>
-      </div>
-
-      <!-- Persona Module — Amber -->
-      <div class="system-row system-row--amber">
-        <div class="system-label system-label--amber">Persona Module</div>
-        <div class="system-readout">
-          <span class="system-value system-value--amber">HAL PERSONA</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- ═══════════════════════════════════════════════ -->
-  <!-- Section 3: Blue Diagnostic Screen              -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <section class="diagnostic" id="diagnostic">
-    <div class="section-label">Diagnostic</div>
-    <div class="diagnostic-screen">
-      <div class="diagnostic-title">PROG: OPENHAL/9000/SYS/STATUS</div>
-
-      <div class="diagnostic-line">
-        <span class="diagnostic-key">TTS ENGINE</span>
-        <span class="diagnostic-val">PIPER-TTS v1.2</span>
-      </div>
-      <div class="diagnostic-line">
-        <span class="diagnostic-key">VOICE MODEL</span>
-        <span class="diagnostic-val">HAL-9000-MEDIUM</span>
-      </div>
-      <div class="diagnostic-line">
-        <span class="diagnostic-key">ARCHITECTURE</span>
-        <span class="diagnostic-val">VITS / ONNX RUNTIME</span>
-      </div>
-      <div class="diagnostic-line">
-        <span class="diagnostic-key">SAMPLE RATE</span>
-        <span class="diagnostic-val">22050 Hz</span>
-      </div>
-      <div class="diagnostic-line">
-        <span class="diagnostic-key">LENGTH SCALE</span>
-        <span class="diagnostic-val">1.1 (DELIBERATE)</span>
-      </div>
-      <div class="diagnostic-line">
-        <span class="diagnostic-key">DEPENDENCIES</span>
-        <span class="diagnostic-val">DOCKER + FFMPEG</span>
-      </div>
-      <div class="diagnostic-line">
-        <span class="diagnostic-key">DOCKER</span>
-        <span class="diagnostic-val">CONTAINER READY</span>
-      </div>
-      <div class="diagnostic-line">
-        <span class="diagnostic-key">FFMPEG</span>
-        <span class="diagnostic-val">DETECTED</span>
-      </div>
-      <div class="diagnostic-line">
-        <span class="diagnostic-key">STATUS</span>
-        <span class="diagnostic-val">ALL SYSTEMS OPERATIONAL<span class="diagnostic-cursor"></span></span>
+      <div class="feature-card">
+        <h3><span class="icon">&gt;</span> Voice Control</h3>
+        <p>Toggle HAL on and off, adjust modes, or trigger speech manually. Full control over when and how HAL speaks.</p>
       </div>
     </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ═══════════════════════════════════════════════ -->
-  <!-- Section 4: Logic Memory Center                 -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <section class="logic-memory" id="logic-memory">
-    <div class="section-label">Logic Memory Center</div>
-
-    <div class="metal-panel">
-      <span class="panel-screw panel-screw--tl"></span>
-      <span class="panel-screw panel-screw--tr"></span>
-      <span class="panel-screw panel-screw--bl"></span>
-      <span class="panel-screw panel-screw--br"></span>
-
-      <div class="panel-header">
-        <span class="panel-header-label">Maximum Restricted Entry</span>
-        <span class="panel-badge">HAL 9000</span>
-        <span class="panel-header-label">Logic Memory Center</span>
-      </div>
-
-      <div class="panel-grid">
-        <div class="panel-cell panel-cell--filled">
-          <div class="panel-cell-title">Native TTS</div>
-          <div class="panel-cell-sub">Piper neural speech</div>
+  <!-- ═══════ LOGIC MEMORY CENTER (3D Room) ═══════ -->
+  <div class="lmc-wrapper">
+    <div class="lmc-label">Logic Memory Center</div>
+    <div class="lmc-room">
+      <div class="room-inner">
+        <!-- Back wall with HAL eye -->
+        <div class="wall back">
+          <div class="lmc-hal-eye"></div>
+          <div class="lmc-monitors">
+            <div class="lmc-monitor"></div>
+            <div class="lmc-monitor"></div>
+            <div class="lmc-monitor"></div>
+          </div>
         </div>
-        <div class="panel-cell panel-cell--empty">
-          <div class="panel-cell-title">Zero Config</div>
-          <div class="panel-cell-sub">Docker handles everything</div>
+        <!-- Left wall with server rack -->
+        <div class="wall left">
+          <div class="rack" id="rack-left"></div>
         </div>
-        <div class="panel-cell panel-cell--empty">
-          <div class="panel-cell-title">In Character</div>
-          <div class="panel-cell-sub">HAL persona always active</div>
+        <!-- Right wall with server rack -->
+        <div class="wall right">
+          <div class="rack" id="rack-right"></div>
         </div>
-        <div class="panel-cell panel-cell--filled">
-          <div class="panel-cell-title">Voice Control</div>
-          <div class="panel-cell-sub">/hal on, off, say, mode</div>
-        </div>
+        <!-- Top wall -->
+        <div class="wall top"></div>
+        <!-- Bottom wall -->
+        <div class="wall bottom"></div>
       </div>
     </div>
-
-    <!-- Memory Terminal Bars -->
-    <div class="memory-bars">
-      <div class="memory-bar-group">
-        <span class="memory-bar-group-label">LT</span>
-        <div class="memory-bar"></div>
-        <div class="memory-bar memory-bar--dim"></div>
-        <div class="memory-bar"></div>
-        <div class="memory-bar"></div>
-        <div class="memory-bar memory-bar--dim"></div>
-        <div class="memory-bar"></div>
-      </div>
-      <div class="memory-bar-gap"></div>
-      <div class="memory-bar-group">
-        <span class="memory-bar-group-label">MT</span>
-        <div class="memory-bar"></div>
-        <div class="memory-bar"></div>
-        <div class="memory-bar memory-bar--dim"></div>
-        <div class="memory-bar"></div>
-        <div class="memory-bar memory-bar--dim"></div>
-        <div class="memory-bar"></div>
-      </div>
-    </div>
-  </section>
+  </div>
 
   <div class="section-divider"></div>
 
-  <!-- ═══════════════════════════════════════════════ -->
-  <!-- Section 5: Installation Sequence               -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <section class="installation" id="installation">
-    <div class="section-label">Installation Sequence</div>
-    <div class="install-container">
+  <!-- ═══════ INSTALL ═══════ -->
+  <section id="install">
+    <div class="section-label">Get Started</div>
+    <h2>Installation</h2>
+    <div class="install-steps">
 
       <div class="install-step">
-        <div class="install-step-number">01</div>
-        <div class="install-step-title">Add to your plugin marketplace</div>
-        <pre class="install-code">{
-  "plugins": {
-    "openhal-9000": {
-      "url": "github:daveleal/claude-plugins/openhal-9000"
-    }
-  }
-}</pre>
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Install the plugin</h3>
+          <p>Add OpenHAL 9000 to your Claude Code setup:</p>
+          <div class="code-block">claude plugin add openhal-9000</div>
+        </div>
       </div>
 
       <div class="install-step">
-        <div class="install-step-number">02</div>
-        <div class="install-step-title">Install the plugin</div>
-        <div class="install-code">/plugins install openhal-9000</div>
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Run setup</h3>
+          <p>Initialize the HAL voice system on your machine:</p>
+          <div class="code-block">/hal setup</div>
+        </div>
       </div>
 
       <div class="install-step">
-        <div class="install-step-number">03</div>
-        <div class="install-step-title">Start speaking</div>
-        <p class="install-step-desc">
-          Once installed, Claude will speak every response aloud as HAL 9000.
-          Use <span class="mono">/hal off</span> to silence, <span class="mono">/hal on</span> to resume,
-          or <span class="mono">/hal say "any text"</span> to speak on demand.
-        </p>
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Start talking</h3>
+          <p>HAL is now active. Every Claude response will be spoken aloud. Control it with:</p>
+          <div class="code-block">/hal on        # Enable voice
+/hal off       # Disable voice
+/hal say "..." # Speak custom text
+/hal status    # Check current state</div>
+        </div>
       </div>
 
-      <div class="install-buttons">
-        <a href="https://github.com/daveleal/claude-plugins" class="ghost-btn">GitHub</a>
-        <a href="#diagnostic" class="ghost-btn ghost-btn--muted">Documentation</a>
-      </div>
     </div>
   </section>
 
-  <div class="section-divider"></div>
-
-  <!-- ═══════════════════════════════════════════════ -->
-  <!-- Section 6: Footer                              -->
-  <!-- ═══════════════════════════════════════════════ -->
-  <footer class="footer">
-    <div class="footer-credit">Built by Leal Labs &middot; A Claude Code Plugin</div>
-    <div class="footer-disclaimer">
-      Not affiliated with or endorsed by MGM, Warner Bros., or the estate of Stanley Kubrick.
-      HAL 9000 is a fictional character from 2001: A Space Odyssey (1968).
-    </div>
+  <!-- ═══════ FOOTER ═══════ -->
+  <footer>
+    <p>
+      OpenHAL 9000 &mdash; A <a href="https://github.com/daveleal" target="_blank">Leal Labs</a> project.
+      <br>
+      Not affiliated with Metro-Goldwyn-Mayer, Warner Bros., or the estate of Arthur C. Clarke.
+    </p>
   </footer>
 
   <script>
-    // Smooth scroll for install button
-    document.querySelectorAll('a[href="#installation"]').forEach(function(a) {
-      a.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('installation').scrollIntoView({ behavior: 'smooth' });
-      });
+    // ── Audio Playback ──────────────────────────────
+    let audioCtx = null;
+    let audioBuffer = null;
+
+    async function loadAudio() {
+      if (audioBuffer) return audioBuffer;
+      try {
+        const resp = await fetch('hal-greeting.wav');
+        const data = await resp.arrayBuffer();
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        audioBuffer = await audioCtx.decodeAudioData(data);
+        return audioBuffer;
+      } catch (e) {
+        console.warn('Could not load HAL greeting:', e);
+        return null;
+      }
+    }
+
+    async function playHAL() {
+      const buf = await loadAudio();
+      if (!buf) return;
+      if (audioCtx.state === 'suspended') await audioCtx.resume();
+      const source = audioCtx.createBufferSource();
+      source.buffer = buf;
+      source.connect(audioCtx.destination);
+      source.start(0);
+    }
+
+    document.getElementById('hal-housing').addEventListener('click', playHAL);
+    document.getElementById('btn-play').addEventListener('click', playHAL);
+
+    // ── Smooth Scroll ───────────────────────────────
+    document.querySelector('.btn-install').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('install').scrollIntoView({ behavior: 'smooth' });
     });
 
-    // HAL voice greeting via Web Audio API
-    (function() {
-      var played = false;
-      var playBtn = document.getElementById('play-label');
-      var housing = document.querySelector('.hal-housing');
-
-      function playGreeting() {
-        if (played) return;
-        played = true;
-        playBtn.textContent = '\u25CF Playing\u2026';
-        playBtn.style.color = 'rgba(255,100,100,0.7)';
-
-        fetch('hal-greeting.wav')
-          .then(function(r) { return r.arrayBuffer(); })
-          .then(function(buf) {
-            var ctx = new (window.AudioContext || window.webkitAudioContext)();
-            return ctx.decodeAudioData(buf).then(function(decoded) {
-              var source = ctx.createBufferSource();
-              source.buffer = decoded;
-              source.connect(ctx.destination);
-              source.start(0);
-              source.onended = function() {
-                playBtn.textContent = '\u2713 HAL has spoken';
-                playBtn.style.color = 'rgba(255,100,100,0.3)';
-              };
-            });
-          })
-          .catch(function() {
-            playBtn.textContent = '\u25B6 Click to hear HAL speak';
-            playBtn.style.color = 'rgba(255,100,100,0.35)';
-            played = false;
-          });
+    // ── Generate Server Rack Dots ───────────────────
+    function generateRack(el, count) {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement(Math.random() < 0.15 ? 'b' : 'i');
+        frag.appendChild(dot);
       }
+      el.appendChild(frag);
+    }
 
-      playBtn.addEventListener('click', playGreeting);
-      housing.addEventListener('click', playGreeting);
-    })();
+    generateRack(document.getElementById('rack-left'), 200);
+    generateRack(document.getElementById('rack-right'), 200);
+
+    // Preload audio on first user interaction
+    document.addEventListener('click', function init() {
+      loadAudio();
+      document.removeEventListener('click', init);
+    }, { once: true });
   </script>
+
 </body>
 </html>
