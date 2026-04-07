@@ -38,144 +38,38 @@
       overflow-x: hidden;
     }
 
-    /* ── HAL 9000 Eye (chrome bezel + dome + bright pupil) ── */
-    .hal9000 {
+    /* ── HAL 9000 Panel — full SVG asset ── */
+    .hal-panel {
       position: relative;
-      width: 165px;
-      height: 165px;
+      width: 220px;
+      /* SVG aspect ratio is 1320 / 3892 = 0.339 */
+      aspect-ratio: 1320 / 3892;
       margin: 0 auto;
-      border-radius: 50%;
-      background: linear-gradient(160deg, #e8e8e8 0%, #888 35%, #444 50%, #aaa 70%, #e8e8e8 100%);
-      box-shadow:
-        inset 0 2px 2px rgba(255,255,255,0.6),
-        inset 0 -2px 2px rgba(0,0,0,0.35),
-        0 6px 22px rgba(0,0,0,0.7);
+      background: url('hal-panel.svg') center/contain no-repeat;
+      cursor: pointer;
     }
-    /* Dark red dome */
-    .hal9000::after {
-      content: '';
+    /* Click target overlay on the pupil for voice playback */
+    .hal-panel-click {
       position: absolute;
-      inset: 10px;
+      /* Eye is at cx=660,cy=2250 in 1320x3892 viewBox */
+      left: 30%; top: 50%;
+      width: 40%; height: 16%;
       border-radius: 50%;
-      background:
-        radial-gradient(circle at 50% 55%,
-          #ff3a00 0%,
-          #d40010 5%,
-          #660003 16%,
-          #2a0001 32%,
-          #160001 55%,
-          #0a0001 100%);
-      box-shadow:
-        inset 0 4px 8px rgba(255,255,255,0.12),
-        inset 0 -3px 6px rgba(0,0,0,0.6);
-      z-index: 1;
-    }
-    /* Bright pupil with strong glow */
-    .hal-pupil {
-      position: absolute;
-      top: 55%; left: 50%;
-      width: 22px; height: 22px;
-      margin: -11px 0 0 -11px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 40%,
-        #fff0fc 0%,
-        #ffe091 18%,
-        #ffe26c 38%,
-        #fdd247 60%,
-        #ff7a00 100%);
-      box-shadow:
-        1px -2px 18px 6px rgba(253,210,71,0.35),
-        -1px 2px 16px 16px rgba(255,0,4,0.7),
-        0 0 40px 8px rgba(255,40,0,0.45);
-      z-index: 3;
     }
 
     /* Flicker animation when speaking */
     @keyframes flicker {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
+      0% { opacity: 1; }
+      20% { opacity: 0.65; }
+      40% { opacity: 1; }
+      60% { opacity: 0.85; }
       80% { opacity: 1; }
-      100% { opacity: 0; }
+      100% { opacity: 1; }
     }
-    .hal-animation {
-      position: absolute; inset: 9px;
-      border-radius: 50%;
-      background: radial-gradient(#79b4ba, #47696d, #890000);
-      mix-blend-mode: color-dodge;
-      opacity: 0;
-      z-index: 3;
-      transition: 500ms;
-      pointer-events: none;
-    }
-    .hal9000:hover .hal-animation { opacity: 1; }
-    .hal-animation.speaking { animation: flicker 3s infinite; }
+    .hal-panel.speaking { animation: flicker 0.4s infinite; }
 
     /* ── Housing Frame (Ryan LaBar) ── */
-    /* Monolith 1:4:9 — visible face is 4:9 (width:height) → 220 × 495 */
-    .halborder {
-      position: relative;
-      width: 220px; height: 495px;
-      margin: 0 auto;
-      border-radius: 2px;
-      background: linear-gradient(180deg, #AEAEAE 0%, #787878 12%, #717171 100%);
-      box-shadow: 1px 3px 5px 1px rgba(0,0,0,0.81);
-    }
-    .halbox {
-      position: absolute; top: 4px; left: 4px;
-      width: 212px; height: 487px;
-      border-radius: 1px;
-      background: #1E1E1E;
-      box-shadow: inset 0px 3px 5px 2px rgba(0,0,0,0.69);
-    }
-    .nameplate {
-      background: linear-gradient(90deg, #0094ce 50%, transparent 50%);
-      border: 1px solid #0094ce;
-      border-radius: 0;
-      color: #fff;
-      font-size: 28px;
-      font-family: 'Fjalla One', sans-serif;
-      line-height: 42px;
-      text-align: center;
-      text-indent: 0.85em;
-      -webkit-text-fill-color: transparent;
-      -webkit-text-stroke-width: 1px;
-      -webkit-text-stroke-color: #fff;
-      position: absolute;
-      top: 16px; left: 16px;
-      width: 180px; height: 42px;
-      z-index: 100;
-      text-transform: uppercase;
-    }
-    .halbox .hal9000 {
-      position: absolute;
-      left: 50%; bottom: 125px;
-      margin: 0;
-      transform: translateX(-50%);
-    }
-    .speakerbox {
-      position: absolute; left: 0; bottom: 0;
-      height: 110px; width: 212px;
-      background: #727272;
-      box-shadow: inset 0px 1px 3px 0px rgba(255,254,255,0.41);
-    }
-    .speakerbg {
-      position: absolute; height: 96px; width: 100%;
-      top: 4px; left: 0;
-      background: linear-gradient(180deg, #323232 0%, #1e1e1e 100%);
-    }
-    .speakerlat {
-      position: absolute; height: 100%; width: 100%; top: 0; left: 0;
-      background-size: 6px 6px;
-      background-image: linear-gradient(90deg, #444 0%, #444 20%, rgba(0,0,0,0.27) 20%, rgba(0,0,0,0.27) 29%, rgba(0,0,0,0) 29%);
-      background-repeat: repeat;
-    }
-    .speakerlong {
-      position: absolute; height: 100%; width: 100%; top: 0; left: 0;
-      background-size: 6px 6px;
-      background-image: linear-gradient(180deg, #444 0%, #444 20%, rgba(0,0,0,0.27) 20%, rgba(0,0,0,0.27) 29%, rgba(0,0,0,0) 29%);
-      background-repeat: repeat;
-      box-shadow: inset 0px 2px 5px 2px rgba(0,0,0,0.55);
-    }
+    /* (housing CSS removed — replaced by hal-panel.svg) */
 
     /* ── Layout ── */
     .hero {
@@ -477,15 +371,8 @@
 
   <!-- ═══ HERO ═══ -->
   <div class="hero">
-    <div class="halborder">
-      <div class="halbox">
-        <div class="nameplate">HAL 9000&nbsp;&nbsp;</div>
-        <div class="hal9000">
-          <div class="hal-pupil"></div>
-          <div class="hal-animation" id="hal-animation"></div>
-        </div>
-        <div class="speakerbox"><div class="speakerbg"><div class="speakerlat"></div><div class="speakerlong"></div></div></div>
-      </div>
+    <div class="hal-panel" id="hal-panel" role="button" aria-label="Play HAL 9000 voice greeting">
+      <div class="hal-panel-click"></div>
     </div>
 
     <button class="play-label" id="play-label" aria-label="Play HAL 9000 voice greeting">&#9654; Click to hear HAL speak</button>
@@ -602,36 +489,35 @@
     (function() {
       var played = false;
       var playBtn = document.getElementById('play-label');
-      var eye = document.querySelector('.hal9000');
-      var anim = document.getElementById('hal-animation');
+      var panel = document.getElementById('hal-panel');
       var audio = new Audio('hal-greeting.wav');
       audio.preload = 'auto';
       audio.addEventListener('ended', function() {
         playBtn.textContent = 'HAL HAS SPOKEN';
-        anim.classList.remove('speaking');
+        panel.classList.remove('speaking');
       });
       audio.addEventListener('error', function() {
         playBtn.textContent = '\u25B6 CLICK TO HEAR HAL SPEAK';
-        anim.classList.remove('speaking');
+        panel.classList.remove('speaking');
         played = false;
       });
       function playGreeting() {
         if (played) return;
         played = true;
         playBtn.textContent = 'PLAYING...';
-        anim.classList.add('speaking');
+        panel.classList.add('speaking');
         audio.currentTime = 0;
         var p = audio.play();
         if (p && p.catch) {
           p.catch(function() {
             playBtn.textContent = '\u25B6 CLICK TO HEAR HAL SPEAK';
-            anim.classList.remove('speaking');
+            panel.classList.remove('speaking');
             played = false;
           });
         }
       }
       playBtn.addEventListener('click', playGreeting);
-      eye.addEventListener('click', playGreeting);
+      panel.addEventListener('click', playGreeting);
     })();
 
     // Smooth scroll
