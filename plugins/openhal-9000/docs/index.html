@@ -437,45 +437,52 @@
       max-width: none !important;
       width: 100%;
       margin: 0 !important;
-      padding: 80px 0 !important;
+      padding: 0 !important;
       background: #000;
       position: relative;
     }
     .lmt-inner {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 40px;
+      width: 100%;
+      margin: 0;
+      padding: 60px 0 0;
       position: relative;
       display: flex;
       justify-content: center;
     }
-    /* Top label boxes (4 groups) */
+    .lmt-inner.bottom { padding: 0 0 60px; }
+    /* Top/bottom label boxes — match bar group widths exactly */
     .lmt-top-labels, .lmt-bot-labels {
       display: flex;
       gap: 28px;
       align-items: stretch;
+      /* Aligns horizontally to the centered .lmt-bars-area below */
     }
-    .lmt-top-labels { margin-bottom: 32px; }
-    .lmt-bot-labels { margin-top: 32px; }
     .lmt-label-box {
       flex: 0 0 auto;
-      width: auto;
+      border: 1.5px solid #b51818;
+      border-bottom: none; /* top labels touch the stripe */
+      height: 110px;
+      padding: 10px 12px 0;
+      display: flex;
+      align-items: flex-end;
+      box-sizing: border-box;
     }
+    .lmt-bot-labels .lmt-label-box {
+      border: 1.5px solid #b51818;
+      border-top: none; /* bottom labels touch the stripe */
+      height: 110px;
+      padding: 0;
+    }
+    /* Widths must match the bar groups: n bars × 26px + (n-1) × 8px gaps */
     .lmt-label-box.g5 { width: calc(5 * 26px + 4 * 8px); }
     .lmt-label-box.g2 { width: calc(2 * 26px + 1 * 8px); }
     .lmt-label-box.g6 { width: calc(6 * 26px + 5 * 8px); }
-    .lmt-label-box {
-      border: 1.5px solid #b51818;
-      height: 90px;
-      padding: 10px 14px;
-      display: flex;
-      align-items: flex-end;
-    }
     .lmt-label-box .lmt-label-text {
-      font-family: 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
-      font-size: 11px;
+      font-family: 'Eurostile-Extended-Regular', 'Aldrich', 'Helvetica Neue Condensed', sans-serif;
+      font-stretch: condensed;
+      font-size: 9px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       color: #ff2a2a;
       text-transform: uppercase;
       line-height: 1.2;
@@ -502,7 +509,7 @@
     }
     .lmt-bars-area {
       background: #000;
-      padding: 24px 28px 30px;
+      padding: 24px 0 30px;
       display: flex;
       flex-direction: column;
       gap: 18px;
@@ -537,14 +544,15 @@
     }
     .lmt-bar .bnum {
       font-family: 'Eurostile_Extd_Black', 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
-      font-size: 15px;
+      font-size: 11px;
       font-weight: 900;
       color: #000;
-      letter-spacing: 0;
+      letter-spacing: -0.5px;
+      line-height: 1;
     }
     .lmt-bar .blabel {
       font-family: 'Eurostile_Extd_Black', 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
-      font-size: 8px;
+      font-size: 7px;
       font-weight: 900;
       color: #1a1a1a;
       letter-spacing: 0;
@@ -552,7 +560,7 @@
       text-transform: uppercase;
     }
     .lmt-bar .blabel sup,
-    .lmt-bar .blabel sub { font-size: 7px; }
+    .lmt-bar .blabel sub { font-size: 6px; }
     .lmt-bar::after {
       content: '';
       position: absolute;
@@ -564,17 +572,17 @@
       background: #ff3a1a;
       box-shadow: 0 0 6px rgba(255,40,10,0.8), inset 0 0 3px rgba(255,200,180,0.6);
     }
-    /* Memory drain sequence copy on the right of the red stripe */
+    /* Memory drain sequence copy — vertically centered over the red */
     .lmt-copy {
-      flex: 1;
-      align-self: flex-end;
-      padding-bottom: 12px;
+      flex: 0 1 auto;
+      max-width: 320px;
+      align-self: center;
       font-family: 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
       font-size: 11px;
       font-weight: 700;
       color: #fff;
       letter-spacing: 3px;
-      line-height: 1.6;
+      line-height: 1.7;
       text-transform: uppercase;
       filter: blur(0.4px);
     }
@@ -996,7 +1004,7 @@
       </div>
     </div>
 
-    <div class="lmt-inner">
+    <div class="lmt-inner bottom">
       <div class="lmt-bot-labels">
         <div class="lmt-label-box g5"></div>
         <div class="lmt-label-box g2"></div>
