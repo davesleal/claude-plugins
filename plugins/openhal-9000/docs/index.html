@@ -446,16 +446,33 @@
       margin: 0;
       padding: 60px 0 0;
       position: relative;
-      display: flex;
-      justify-content: center;
     }
     .lmt-inner.bottom { padding: 0 0 60px; }
+    /* Match .lmt-stripe-inner exactly so the label boxes align with bars */
+    .lmt-inner-flex {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      width: 100%;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 40px;
+    }
+    .lmt-inner-flex .lmt-copy-spacer {
+      flex: 0 1 auto;
+      max-width: 320px;
+      width: 320px;
+      visibility: hidden;
+    }
     /* Top/bottom label boxes — match bar group widths exactly */
     .lmt-top-labels, .lmt-bot-labels {
       display: flex;
       gap: 28px;
       align-items: stretch;
-      /* Aligns horizontally to the centered .lmt-bars-area below */
+      flex: 0 0 auto;
+      padding: 0 36px; /* match .lmt-bars-area horizontal padding */
+      box-sizing: content-box;
     }
     .lmt-label-box {
       flex: 0 0 auto;
@@ -470,7 +487,7 @@
     .lmt-bot-labels .lmt-label-box {
       border: 1.5px solid #b51818;
       border-top: none; /* bottom labels touch the stripe */
-      height: 110px;
+      height: 60px;
       padding: 0;
     }
     /* Widths must match the bar groups: n bars × 26px + (n-1) × 8px gaps */
@@ -478,11 +495,11 @@
     .lmt-label-box.g2 { width: calc(2 * 26px + 1 * 8px); }
     .lmt-label-box.g6 { width: calc(6 * 26px + 5 * 8px); }
     .lmt-label-box .lmt-label-text {
-      font-family: 'Eurostile-Extended-Regular', 'Aldrich', 'Helvetica Neue Condensed', sans-serif;
+      font-family: 'Aldrich', 'Helvetica Neue', 'Arial Narrow', sans-serif;
       font-stretch: condensed;
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       color: #ff2a2a;
       text-transform: uppercase;
       line-height: 1.2;
@@ -509,10 +526,11 @@
     }
     .lmt-bars-area {
       background: #000;
-      padding: 24px 0 30px;
+      padding: 30px 36px 36px;
       display: flex;
       flex-direction: column;
       gap: 18px;
+      flex: 0 0 auto;
     }
     .lmt-row {
       display: flex;
@@ -543,15 +561,17 @@
         inset -2px 0 4px rgba(0,0,0,0.15);
     }
     .lmt-bar .bnum {
-      font-family: 'Eurostile_Extd_Black', 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
-      font-size: 11px;
+      font-family: 'Aldrich', 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-stretch: condensed;
+      font-size: 12px;
       font-weight: 900;
       color: #000;
       letter-spacing: -0.5px;
       line-height: 1;
     }
     .lmt-bar .blabel {
-      font-family: 'Eurostile_Extd_Black', 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
+      font-family: 'Aldrich', 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-stretch: condensed;
       font-size: 7px;
       font-weight: 900;
       color: #1a1a1a;
@@ -924,11 +944,14 @@
   <!-- ═══ LOGIC MEMORY TERMINAL ═══ -->
   <section class="lmt-section">
     <div class="lmt-inner">
-      <div class="lmt-top-labels">
-        <div class="lmt-label-box g5"><div class="lmt-label-text">IV-1 Logic<br>Terminal</div></div>
-        <div class="lmt-label-box g2"><div class="lmt-label-text">IV-2 Logic<br>Terminal</div></div>
-        <div class="lmt-label-box g6"><div class="lmt-label-text">IV-3 Logic<br>Terminal</div></div>
-        <div class="lmt-label-box g6"><div class="lmt-label-text">Memory<br>Terminal</div></div>
+      <div class="lmt-inner-flex">
+        <div class="lmt-top-labels">
+          <div class="lmt-label-box g5"><div class="lmt-label-text">IV-1 Logic<br>Terminal</div></div>
+          <div class="lmt-label-box g2"><div class="lmt-label-text">IV-2 Logic<br>Terminal</div></div>
+          <div class="lmt-label-box g6"><div class="lmt-label-text">IV-3 Logic<br>Terminal</div></div>
+          <div class="lmt-label-box g6"><div class="lmt-label-text">Memory<br>Terminal</div></div>
+        </div>
+        <div class="lmt-copy-spacer"></div>
       </div>
     </div>
 
@@ -1005,11 +1028,14 @@
     </div>
 
     <div class="lmt-inner bottom">
-      <div class="lmt-bot-labels">
-        <div class="lmt-label-box g5"></div>
-        <div class="lmt-label-box g2"></div>
-        <div class="lmt-label-box g6"></div>
-        <div class="lmt-label-box g6"></div>
+      <div class="lmt-inner-flex">
+        <div class="lmt-bot-labels">
+          <div class="lmt-label-box g5"></div>
+          <div class="lmt-label-box g2"></div>
+          <div class="lmt-label-box g6"></div>
+          <div class="lmt-label-box g6"></div>
+        </div>
+        <div class="lmt-copy-spacer"></div>
       </div>
     </div>
   </section>
