@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans+Expanded:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -480,17 +481,16 @@
     }
     /* Widths must match the bar groups: n bars × 26px + (n-1) × 8px gaps */
     .lmt-label-box.g5 { width: calc(5 * 26px + 4 * 8px); }
-    .lmt-label-box.g2 { width: calc(2 * 26px + 1 * 8px); }
+    .lmt-label-box.g2 { width: 110px; } /* widened past the 60px bar group so 'IV-2 LOGIC TERMINAL' fits */
     .lmt-label-box.g6 { width: calc(6 * 26px + 5 * 8px); }
     .lmt-label-box .lmt-label-text {
-      font-family: 'Agdasima', 'IBM Plex Sans Condensed', sans-serif;
-      font-stretch: condensed;
+      font-family: 'League Spartan', 'Agdasima', sans-serif;
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.5px;
       color: #ff2a2a;
       text-transform: uppercase;
-      line-height: 1.2;
+      line-height: 1.25;
       filter: blur(0.4px);
     }
     /* Wide red horizontal stripe holding the bars */
@@ -522,14 +522,17 @@
     }
     .lmt-row {
       display: flex;
-      gap: 28px;
+      gap: 44px;
       align-items: flex-end;
       justify-content: flex-start;
     }
     .lmt-group {
       display: flex;
       gap: 8px;
+      justify-content: center;
     }
+    /* IV-2 group gets the same widened slot as its label box (110px) so they align */
+    .lmt-group.g2 { width: 110px; }
     .lmt-bar {
       position: relative;
       flex: 0 0 26px;
@@ -559,16 +562,13 @@
     }
     .lmt-bar .blabel {
       font-family: 'Agdasima', 'IBM Plex Sans Condensed', sans-serif;
-      font-stretch: condensed;
-      font-size: 7px;
-      font-weight: 900;
+      font-size: 8px;
+      font-weight: 700;
       color: #1a1a1a;
-      letter-spacing: 0;
+      letter-spacing: 0.3px;
       line-height: 1;
       text-transform: uppercase;
     }
-    .lmt-bar .blabel sup,
-    .lmt-bar .blabel sub { font-size: 6px; }
     .lmt-bar::after {
       content: '';
       position: absolute;
@@ -607,18 +607,18 @@
       padding: 56px 56px 48px;
     }
     .zg-headline {
-      font-family: 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
-      font-size: 42px;
+      font-family: 'League Spartan', 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+      font-size: 56px;
       font-weight: 900;
-      color: #fff;
-      letter-spacing: 2px;
-      line-height: 1;
+      color: #ff2a2a;
+      letter-spacing: 1px;
+      line-height: 0.95;
       text-transform: uppercase;
       text-align: center;
       margin-bottom: 28px;
     }
     .zg-subhead {
-      font-family: 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+      font-family: 'League Spartan', 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
       font-size: 22px;
       font-weight: 700;
       color: #fff;
@@ -643,7 +643,7 @@
       align-items: flex-start;
     }
     .zg-num {
-      font-family: 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+      font-family: 'League Spartan', 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
       font-size: 38px;
       font-weight: 900;
       color: #fff;
@@ -654,7 +654,7 @@
       padding-top: 2px;
     }
     .zg-text {
-      font-family: 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+      font-family: 'League Spartan', 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
       font-size: 14px;
       font-weight: 700;
       color: #fff;
@@ -948,23 +948,23 @@
         <div class="lmt-bars-area">
           <div class="lmt-row">
             <div class="lmt-group g5">
-              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/<sub>1</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/<sub>1</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/<sub>1</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/<sub>1</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/1</span></div>
+              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/1</span></div>
+              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/1</span></div>
+              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/1</span></div>
+              <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">LT/1</span></div>
             </div>
             <div class="lmt-group g2">
-              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/<sub>2</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/<sub>2</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/2</span></div>
+              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/2</span></div>
             </div>
             <div class="lmt-group g6">
-              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">LT/3</span></div>
             </div>
             <div class="lmt-group g6">
               <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">MT</span></div>
@@ -977,23 +977,23 @@
           </div>
           <div class="lmt-row">
             <div class="lmt-group g5">
-              <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">LT/<sub>1</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">LT/<sub>1</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">LT/<sub>1</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">LT/<sub>1</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">LT/1</span></div>
+              <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">LT/1</span></div>
+              <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">LT/1</span></div>
+              <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">LT/1</span></div>
+              <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">LT/1</span></div>
             </div>
             <div class="lmt-group g2">
-              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/<sub>2</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/<sub>2</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/2</span></div>
+              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/2</span></div>
             </div>
             <div class="lmt-group g6">
-              <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">11</span><span class="blabel">LT/<sub>3</sub></span></div>
-              <div class="lmt-bar"><span class="bnum">12</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">11</span><span class="blabel">LT/3</span></div>
+              <div class="lmt-bar"><span class="bnum">12</span><span class="blabel">LT/3</span></div>
             </div>
             <div class="lmt-group g6">
               <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">MT</span></div>
