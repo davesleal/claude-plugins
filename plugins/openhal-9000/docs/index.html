@@ -316,22 +316,96 @@
       line-height: 1.7;
     }
 
-    /* ── Vitals (animated waveform canvas) ── */
+    /* ── Vitals (HTML lanes with scrolling ECG SVG) ── */
     .vitals-monitor {
-      position: relative;
       width: 100%;
-      height: 480px;
       background: #000;
       border: 1px solid rgba(84,104,183,0.4);
       border-radius: 4px;
       overflow: hidden;
     }
-    #vitals-canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-      background: #050809;
+    .vital-lane {
+      display: flex;
+      align-items: stretch;
+      height: 72px;
+      border-bottom: 2px solid #000;
     }
+    .vital-lane:last-child { border-bottom: none; }
+    .vital-label-block {
+      width: 200px;
+      flex-shrink: 0;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-family: 'Eurostile-Extended-Regular', 'Eurostile', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .vital-graph {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+    .vital-graph::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-repeat: no-repeat;
+      background-size: 1px 1px;
+    }
+    .vital-graph .strip {
+      position: absolute;
+      inset: 0;
+      background-image: url('hr-line.svg');
+      background-size: 800px 100%;
+      background-repeat: repeat-x;
+      animation: ecg-scroll 4s linear infinite;
+      filter: drop-shadow(0 0 4px rgba(255,255,255,0.4)) brightness(1.4) saturate(0);
+      opacity: 0.95;
+    }
+    @keyframes ecg-scroll {
+      0% { background-position: 0 50%; }
+      100% { background-position: -800px 50%; }
+    }
+    /* Per-lane label colors and grid tints */
+    .lane-cardio .vital-label-block { background: #3aa9b8; }
+    .lane-metabolic .vital-label-block { background: #c92020; }
+    .lane-cns .vital-label-block { background: #1f7a6e; }
+    .lane-pulmonary .vital-label-block { background: #5d8db5; }
+    .lane-systems .vital-label-block { background: #c92020; }
+    .lane-locomotor .vital-label-block { background: #7e7d2a; }
+
+    .lane-cardio .vital-graph,
+    .lane-cns .vital-graph,
+    .lane-pulmonary .vital-graph {
+      background-image:
+        repeating-linear-gradient(90deg, transparent 0, transparent 19px, rgba(58,169,184,0.45) 19px, rgba(58,169,184,0.45) 20px),
+        repeating-linear-gradient(0deg, transparent 0, transparent 17px, rgba(58,169,184,0.45) 17px, rgba(58,169,184,0.45) 18px);
+    }
+    .lane-metabolic .vital-graph,
+    .lane-systems .vital-graph {
+      background-image:
+        repeating-linear-gradient(90deg, transparent 0, transparent 19px, rgba(201,32,32,0.55) 19px, rgba(201,32,32,0.55) 20px),
+        repeating-linear-gradient(0deg, transparent 0, transparent 17px, rgba(201,32,32,0.55) 17px, rgba(201,32,32,0.55) 18px);
+    }
+    .lane-locomotor .vital-graph {
+      background-image:
+        repeating-linear-gradient(90deg, transparent 0, transparent 19px, rgba(126,125,42,0.55) 19px, rgba(126,125,42,0.55) 20px),
+        repeating-linear-gradient(0deg, transparent 0, transparent 17px, rgba(126,125,42,0.55) 17px, rgba(126,125,42,0.55) 18px);
+    }
+    /* Vary scroll speeds per lane for visual variety */
+    .lane-cardio .strip { animation-duration: 5s; }
+    .lane-metabolic .strip { animation-duration: 2.5s; }
+    .lane-cns .strip { animation-duration: 6s; }
+    .lane-pulmonary .strip { animation-duration: 3.5s; }
+    .lane-systems .strip { animation-duration: 4s; }
+    .lane-locomotor .strip { animation-duration: 2.8s; }
 
     /* ── 3D Room as CTA background ── */
     .cta-wrapper {
@@ -457,16 +531,17 @@
       margin: 0 auto;
     }
     .footer-credit {
-      font-size: 11px; color: #3e6682;
+      font-size: 12px; color: #8aaecf;
       letter-spacing: 2px;
       filter: blur(0.5px);
     }
     .footer-disclaimer {
-      font-size: 10px; color: #1a2530;
+      font-size: 11px; color: #6a89a8;
       margin-top: 12px;
       letter-spacing: 1px;
       filter: blur(0.5px);
       text-transform: none;
+      line-height: 1.6;
     }
 
     /* ── Responsive ── */
@@ -549,7 +624,30 @@
   <section>
     <div class="section-label">Systems Operational</div>
     <div class="vitals-monitor">
-      <canvas id="vitals-canvas"></canvas>
+      <div class="vital-lane lane-cardio">
+        <div class="vital-label-block">Cardio<br>Vascular</div>
+        <div class="vital-graph"><div class="strip"></div></div>
+      </div>
+      <div class="vital-lane lane-metabolic">
+        <div class="vital-label-block">Metabolic<br>Levels</div>
+        <div class="vital-graph"><div class="strip"></div></div>
+      </div>
+      <div class="vital-lane lane-cns">
+        <div class="vital-label-block">Central<br>Nerv. System</div>
+        <div class="vital-graph"><div class="strip"></div></div>
+      </div>
+      <div class="vital-lane lane-pulmonary">
+        <div class="vital-label-block">Pulmonary<br>Function</div>
+        <div class="vital-graph"><div class="strip"></div></div>
+      </div>
+      <div class="vital-lane lane-systems">
+        <div class="vital-label-block">Systems<br>Integration</div>
+        <div class="vital-graph"><div class="strip"></div></div>
+      </div>
+      <div class="vital-lane lane-locomotor">
+        <div class="vital-label-block">Locomotor<br>System</div>
+        <div class="vital-graph"><div class="strip"></div></div>
+      </div>
     </div>
   </section>
 
@@ -659,191 +757,6 @@
       });
     });
 
-    // ── Vitals Monitor (2001 life signs panel) ──
-    (() => {
-      const DPR = Math.min(2, window.devicePixelRatio || 1);
-      const TAU = Math.PI * 2;
-
-      // Lanes from the film: label color, grid color, label text
-      const LANES = [
-        { label:'CARDIO\nVASCULAR',     bg:'#3aa9b8', grid:'rgba(58,169,184,0.45)' },
-        { label:'METABOLIC\nLEVELS',    bg:'#c92020', grid:'rgba(201,32,32,0.55)'  },
-        { label:'CENTRAL\nNERV. SYSTEM',bg:'#1f7a6e', grid:'rgba(31,122,110,0.55)' },
-        { label:'PULMONARY\nFUNCTION',  bg:'#5d8db5', grid:'rgba(93,141,181,0.45)' },
-        { label:'SYSTEMS\nINTEGRATION', bg:'#c92020', grid:'rgba(201,32,32,0.55)'  },
-        { label:'LOCOMOTOR\nSYSTEM',    bg:'#7e7d2a', grid:'rgba(126,125,42,0.55)' }
-      ];
-
-      // Pseudo-random with seed (deterministic per pixel position)
-      function noise(x, seed) {
-        const v = Math.sin(x * 12.9898 + seed * 78.233) * 43758.5453;
-        return v - Math.floor(v);
-      }
-      // Smoothed noise (1D value noise)
-      function vnoise(x, seed) {
-        const xi = Math.floor(x);
-        const xf = x - xi;
-        const a = noise(xi, seed);
-        const b = noise(xi + 1, seed);
-        const u = xf * xf * (3 - 2 * xf);
-        return a * (1 - u) + b * u;
-      }
-      // Multi-octave noise
-      function fbm(x, seed, octaves) {
-        let v = 0, amp = 0.5, freq = 1;
-        for (let i = 0; i < octaves; i++) {
-          v += vnoise(x * freq, seed + i) * amp;
-          amp *= 0.5;
-          freq *= 2;
-        }
-        return v;
-      }
-
-      // Each lane has a different waveform character
-      function laneSample(laneIdx, x, t) {
-        // x in pixels, t in ms — used to scroll
-        const u = x * 0.01 - t * 0.0005;
-        switch(laneIdx) {
-          case 0: { // CARDIO VASCULAR — slow undulating with occasional spikes
-            const base = fbm(u * 0.4, 11, 3) * 0.4 - 0.2;
-            const spike = Math.exp(-Math.pow(((u * 0.3) % 6) - 3, 2) * 4) * 0.6;
-            return base + spike + (Math.random() - 0.5) * 0.04;
-          }
-          case 1: { // METABOLIC LEVELS — high frequency noisy
-            return (fbm(u * 4, 22, 4) - 0.5) * 1.4 + (Math.random() - 0.5) * 0.15;
-          }
-          case 2: { // CENTRAL NERV SYSTEM — small steady jagged pulses
-            const tooth = ((u * 1.5) % 1);
-            const saw = (tooth < 0.1) ? -tooth * 6 : (tooth - 0.1) * 0.2;
-            return saw * 0.35 + (Math.random() - 0.5) * 0.05;
-          }
-          case 3: { // PULMONARY FUNCTION — medium jittery with downward sloping pulses
-            const pulse = Math.sin(u * 1.8) * 0.4;
-            return pulse + (fbm(u * 3, 33, 3) - 0.5) * 0.6 + (Math.random() - 0.5) * 0.1;
-          }
-          case 4: { // SYSTEMS INTEGRATION — stepped/blocky variations
-            const stepped = Math.floor(fbm(u * 0.8, 44, 2) * 5) / 5;
-            return (stepped - 0.5) * 0.9 + (Math.random() - 0.5) * 0.08;
-          }
-          case 5: { // LOCOMOTOR SYSTEM — noisy, with intentional dropouts
-            const drop = Math.sin(u * 0.3) > 0.3 ? 1 : 0;
-            return ((fbm(u * 5, 55, 4) - 0.5) * 1.3) * drop + (Math.random() - 0.5) * 0.12 * drop;
-          }
-        }
-        return 0;
-      }
-
-      class FilmMonitor {
-        constructor(canvas) {
-          this.c = canvas;
-          this.ctx = canvas.getContext('2d', { alpha: false });
-          this.w = 0; this.h = 0;
-          this.tMs = 0;
-          this.headX = 0;
-          this.lastRAF = performance.now();
-          this.resize();
-          window.addEventListener('resize', () => this.resize());
-          setTimeout(() => this.resize(), 100);
-          requestAnimationFrame((t) => this.loop(t));
-        }
-
-        resize() {
-          const r = this.c.getBoundingClientRect();
-          this.w = Math.max(1, Math.floor(r.width * DPR));
-          this.h = Math.max(1, Math.floor(r.height * DPR));
-          this.c.width = this.w;
-          this.c.height = this.h;
-        }
-
-        loop(now) {
-          const dt = Math.min(60, now - this.lastRAF);
-          this.lastRAF = now;
-          this.frame(dt);
-          requestAnimationFrame((t) => this.loop(t));
-        }
-
-        frame(dt) {
-          const ctx = this.ctx;
-          const w = this.w, h = this.h;
-          if (w < 2 || h < 2) return;
-
-          this.tMs += dt;
-
-          // Background
-          ctx.fillStyle = '#000';
-          ctx.fillRect(0, 0, w, h);
-
-          const labelW = Math.min(220 * DPR, w * 0.22);
-          const lanes = LANES.length;
-          const padY = 4 * DPR;
-          const gap = 4 * DPR;
-          const laneH = (h - (lanes - 1) * gap - padY * 2) / lanes;
-
-          for (let i = 0; i < lanes; i++) {
-            const lane = LANES[i];
-            const y0 = padY + i * (laneH + gap);
-            const mid = y0 + laneH / 2;
-
-            // Label block
-            ctx.fillStyle = lane.bg;
-            ctx.fillRect(0, y0, labelW, laneH);
-
-            // Label text (two lines)
-            const lines = lane.label.split('\n');
-            ctx.fillStyle = '#fff';
-            ctx.font = `700 ${13 * DPR}px 'Eurostile-Extended-Regular', system-ui, sans-serif`;
-            ctx.textBaseline = 'middle';
-            const lineH = 16 * DPR;
-            const startY = mid - ((lines.length - 1) * lineH) / 2;
-            for (let li = 0; li < lines.length; li++) {
-              ctx.fillText(lines[li], 14 * DPR, startY + li * lineH);
-            }
-
-            // Grid background area
-            const gx0 = labelW;
-            const gw = w - labelW;
-            ctx.fillStyle = '#000';
-            ctx.fillRect(gx0, y0, gw, laneH);
-
-            // Tinted grid overlay
-            const cellW = 18 * DPR;
-            const cellH = laneH / 4;
-            ctx.strokeStyle = lane.grid;
-            ctx.lineWidth = 1 * DPR;
-            ctx.beginPath();
-            for (let x = gx0; x <= gx0 + gw; x += cellW) {
-              ctx.moveTo(x + 0.5, y0);
-              ctx.lineTo(x + 0.5, y0 + laneH);
-            }
-            for (let y = y0; y <= y0 + laneH; y += cellH) {
-              ctx.moveTo(gx0, y + 0.5);
-              ctx.lineTo(gx0 + gw, y + 0.5);
-            }
-            ctx.stroke();
-
-            // White lifeline trace
-            ctx.strokeStyle = 'rgba(255,255,255,0.95)';
-            ctx.lineWidth = 1.6 * DPR;
-            ctx.shadowColor = 'rgba(255,255,255,0.4)';
-            ctx.shadowBlur = 2 * DPR;
-            ctx.beginPath();
-            const stepX = 2 * DPR;
-            const amp = laneH * 0.38;
-            for (let x = 0; x <= gw; x += stepX) {
-              const sample = laneSample(i, x, this.tMs);
-              const y = mid + sample * amp;
-              if (x === 0) ctx.moveTo(gx0 + x, y);
-              else ctx.lineTo(gx0 + x, y);
-            }
-            ctx.stroke();
-            ctx.shadowBlur = 0;
-          }
-        }
-      }
-
-      const canvas = document.getElementById('vitals-canvas');
-      if (canvas) new FilmMonitor(canvas);
-    })();
   </script>
 </body>
 </html>
