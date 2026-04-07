@@ -290,18 +290,30 @@
     .crtScreen {
       background: radial-gradient(ellipse at center, #14222d 0%, #0c141b 80%);
       border-radius: 28px;
-      padding: 28px 36px;
       box-shadow:
         inset 0 0 60px rgba(0,0,0,0.6),
         inset 0 0 120px rgba(20,40,60,0.4);
       position: relative;
       overflow: hidden;
-      /* Fixed height so content swaps don't reflow the page */
-      min-height: 380px;
-      display: flex;
-      flex-direction: column;
+      height: 360px;
     }
-    .termTextBox { flex: 1; }
+    .termTextBox {
+      position: absolute;
+      inset: 0;
+      padding: 28px 36px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 1;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(177,239,225,0.3) transparent;
+    }
+    .termTextBox::-webkit-scrollbar { width: 8px; }
+    .termTextBox::-webkit-scrollbar-track { background: transparent; }
+    .termTextBox::-webkit-scrollbar-thumb {
+      background: rgba(177,239,225,0.25);
+      border-radius: 4px;
+    }
+    .termTextBox::-webkit-scrollbar-thumb:hover { background: rgba(177,239,225,0.45); }
     .crtScreen::before {
       content: '';
       position: absolute;
@@ -375,18 +387,40 @@
       padding: 0 12px;
       letter-spacing: 3px;
     }
-    .feature-btns .btn.active {
-      background: linear-gradient(180deg, #b1efe1 0%, #5fbcbb 100%);
-      color: #0a0a0a;
+    /* Inactive (faint, frosted) state */
+    .feature-btns .btn {
+      background: linear-gradient(180deg, rgba(220,222,232,0.18) 0%, rgba(160,164,176,0.10) 100%);
+      color: rgba(220,224,235,0.55);
+      text-shadow: none;
       box-shadow:
-        0 1px 0px 0px #ffffff inset,
-        0 -1px 0px 0px #3a8a8a inset,
-        1px 0 0px 0px #7fdcdc inset,
-        -1px 0 0px 0px #7fdcdc inset,
-        0 6px 0px 0px #1a4a4a,
-        0 7px 3px 0px rgba(0,0,0,0.4),
-        0 0 24px 0px rgba(177,239,225,0.45),
-        0 12px 22px 0px rgba(0,0,0,0.45);
+        0 1px 0px 0px rgba(255,255,255,0.18) inset,
+        0 -1px 0px 0px rgba(0,0,0,0.25) inset,
+        1px 0 0px 0px rgba(255,255,255,0.10) inset,
+        -1px 0 0px 0px rgba(255,255,255,0.10) inset,
+        0 6px 0px 0px rgba(40,44,54,0.55),
+        0 7px 3px 0px rgba(0,0,0,0.35),
+        0 12px 18px 0px rgba(0,0,0,0.35);
+    }
+    /* Active (bright, lit from within) */
+    .feature-btns .btn.active {
+      background: radial-gradient(ellipse at 50% 35%, #ffffff 0%, #f4f6fb 22%, #d8dce6 65%, #aeb4c4 100%);
+      color: #0a0a0a;
+      text-shadow: 0 0 1px rgba(0,0,0,0.4);
+      box-shadow:
+        /* strong inner core glow */
+        0 0 30px 4px rgba(255,255,255,0.95) inset,
+        0 -2px 4px rgba(255,255,255,0.85) inset,
+        0 2px 2px rgba(255,255,255,0.7) inset,
+        /* edge highlights */
+        1px 0 0px 0px rgba(255,255,255,0.9) inset,
+        -1px 0 0px 0px rgba(255,255,255,0.9) inset,
+        /* depth stem */
+        0 6px 0px 0px #6a6e7c,
+        0 7px 3px 0px rgba(0,0,0,0.45),
+        /* outer halo */
+        0 0 22px 2px rgba(255,255,255,0.55),
+        0 0 50px 6px rgba(255,255,255,0.25),
+        0 12px 22px 0px rgba(0,0,0,0.55);
     }
 
     /* ── Zero Gravity Toilet style instructions ── */
