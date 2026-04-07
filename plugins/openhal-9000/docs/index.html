@@ -205,88 +205,109 @@
       margin-bottom: 24px;
     }
 
-    /* ── Briefing dome (CAUTION / EXPLOSIVE BOLTS style) ── */
-    .briefing-dome {
+    /* ── Briefing dome (full-width, sphere with curved text) ── */
+    .briefing-section {
+      max-width: none !important;
+      width: 100%;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #1a1a1a;
       position: relative;
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 80px 90px 70px;
-      background:
-        radial-gradient(ellipse 140% 100% at center 45%, #ffffff 0%, #f4f3ee 55%, #d0cdc2 92%, #b8b5aa 100%);
-      box-shadow:
-        inset 0 8px 30px rgba(0,0,0,0.08),
-        inset 0 -12px 40px rgba(0,0,0,0.18),
-        inset 30px 0 60px rgba(0,0,0,0.10),
-        inset -30px 0 60px rgba(0,0,0,0.10),
-        0 20px 60px rgba(0,0,0,0.5);
-      border-radius: 16px;
       overflow: hidden;
-      text-transform: none;
+      height: 640px;
     }
-    .briefing-dome::before,
-    .briefing-dome::after {
-      content: '';
+    .briefing-sphere-wrap {
       position: absolute;
-      width: 18px;
-      height: 12px;
-      background: #d62828;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .briefing-dome::before { top: 22px; left: 22px; transform: rotate(-12deg); }
-    .briefing-dome::after  { top: 22px; right: 22px; transform: rotate(12deg); }
+    /* Huge white sphere — bigger than the section so it gets cropped at top and bottom */
+    .briefing-sphere {
+      width: 1400px;
+      height: 1400px;
+      max-width: 160vw;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 38%,
+          #ffffff 0%,
+          #f8f7f1 30%,
+          #ebe9df 60%,
+          #c8c5b6 88%,
+          #9a978a 100%);
+      box-shadow:
+        inset 0 60px 100px rgba(0,0,0,0.18),
+        inset 0 -100px 140px rgba(0,0,0,0.35),
+        inset 80px 0 120px rgba(0,0,0,0.10),
+        inset -80px 0 120px rgba(0,0,0,0.10),
+        0 0 200px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    /* Red rivets on the sphere */
     .briefing-rivet {
       position: absolute;
-      width: 18px;
-      height: 12px;
+      width: 26px;
+      height: 16px;
       background: #d62828;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
-    .briefing-rivet.bl { bottom: 22px; left: 22px; transform: rotate(12deg); }
-    .briefing-rivet.br { bottom: 22px; right: 22px; transform: rotate(-12deg); }
-    .briefing-headline {
+    .briefing-rivet.tl { top: 33%; left: 22%; transform: rotate(-18deg); }
+    .briefing-rivet.tr { top: 33%; right: 22%; transform: rotate(18deg); }
+    .briefing-rivet.bl { bottom: 33%; left: 24%; transform: rotate(18deg); }
+    .briefing-rivet.br { bottom: 33%; right: 24%; transform: rotate(-18deg); }
+
+    /* SVG with curved textPath laid over the sphere */
+    .briefing-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .briefing-svg .svg-headline {
       font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
-      font-size: 64px;
+      font-size: 72px;
       font-weight: 900;
-      color: #d62828;
-      letter-spacing: 4px;
-      line-height: 1;
+      fill: #d62828;
+      letter-spacing: 8px;
       text-transform: uppercase;
-      text-align: center;
-      margin: 0 0 8px;
     }
-    .briefing-subhead {
+    .briefing-svg .svg-subhead {
       font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 800;
-      color: #d62828;
-      letter-spacing: 1.5px;
-      line-height: 1;
+      fill: #111;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      text-align: center;
-      margin-bottom: 38px;
     }
-    .briefing-body {
+    .briefing-svg .svg-footline {
       font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
-      font-size: 13px;
+      font-size: 60px;
+      font-weight: 900;
+      fill: #d62828;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+    }
+    /* HTML body paragraph — perspective tilt to suggest dome curve */
+    .briefing-body {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) perspective(900px) rotateX(8deg);
+      transform-origin: center;
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+      font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
       font-weight: 700;
       color: #111;
-      line-height: 1.45;
-      letter-spacing: 0.2px;
-      text-align: center;
-      max-width: 540px;
-      margin: 0 auto 38px;
+      line-height: 1.5;
+      letter-spacing: 0.4px;
       text-transform: none;
-    }
-    .briefing-footline {
-      font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
-      font-size: 56px;
-      font-weight: 900;
-      color: #d62828;
-      letter-spacing: 6px;
-      line-height: 1;
-      text-transform: uppercase;
-      text-align: center;
-      margin: 0;
+      pointer-events: auto;
     }
 
     /* Features grid */
@@ -930,18 +951,38 @@
     <a href="#install" class="btn illuminated">Install</a>
   </div>
 
-  <!-- ═══ BRIEFING (CAUTION dome) ═══ -->
-  <section>
-    <div class="briefing-dome">
-      <span class="briefing-rivet bl"></span>
-      <span class="briefing-rivet br"></span>
-      <h2 class="briefing-headline">Caution</h2>
-      <p class="briefing-subhead">Maintenance and Replacement Instructions</p>
-      <p class="briefing-body">
-        OpenHAL 9000 is a Claude Code plugin that gives your AI assistant a voice — specifically, the voice of HAL 9000. Claude speaks every response aloud. He does not read text. He editorializes. Calm, precise, politely unsettling. Native Piper TTS runs directly on Apple Silicon. No Docker. No ffmpeg. No external servers. Just Python and Claude Code.
-      </p>
-      <p class="briefing-footline">System Briefing</p>
+  <!-- ═══ BRIEFING (full-width sphere with curved text) ═══ -->
+  <section class="briefing-section">
+    <div class="briefing-sphere-wrap">
+      <div class="briefing-sphere">
+        <span class="briefing-rivet tl"></span>
+        <span class="briefing-rivet tr"></span>
+        <span class="briefing-rivet bl"></span>
+        <span class="briefing-rivet br"></span>
+      </div>
     </div>
+    <svg class="briefing-svg" viewBox="0 0 1200 640" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <!-- Top arc (CAUTION) — bows upward at the middle, like a sphere latitude above center -->
+        <path id="briefing-top-arc" d="M 320 220 Q 600 168 880 220" />
+        <!-- Subtitle arc — slightly flatter -->
+        <path id="briefing-sub-arc" d="M 360 280 Q 600 246 840 280" />
+        <!-- Bottom arc (SYSTEM BRIEFING) — bows downward, latitude below center -->
+        <path id="briefing-bot-arc" d="M 300 460 Q 600 514 900 460" />
+      </defs>
+      <text class="svg-headline">
+        <textPath href="#briefing-top-arc" startOffset="50%" text-anchor="middle">CAUTION</textPath>
+      </text>
+      <text class="svg-subhead">
+        <textPath href="#briefing-sub-arc" startOffset="50%" text-anchor="middle">Maintenance and Replacement Instructions</textPath>
+      </text>
+      <text class="svg-footline">
+        <textPath href="#briefing-bot-arc" startOffset="50%" text-anchor="middle">System Briefing</textPath>
+      </text>
+    </svg>
+    <p class="briefing-body">
+      OpenHAL 9000 is a Claude Code plugin that gives your AI assistant a voice — specifically, the voice of HAL 9000. Claude speaks every response aloud. He does not read text. He editorializes. Calm, precise, politely unsettling. Native Piper TTS on Apple Silicon. No Docker. No ffmpeg.
+    </p>
   </section>
 
   <!-- ═══ FEATURES (IBM CRT screen with switcher) ═══ -->
