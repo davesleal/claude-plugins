@@ -320,8 +320,8 @@
     .vitals-monitor {
       position: relative;
       width: 100%;
-      height: 420px;
-      background: #050809;
+      height: 480px;
+      background: #000;
       border: 1px solid rgba(84,104,183,0.4);
       border-radius: 4px;
       overflow: hidden;
@@ -659,213 +659,190 @@
       });
     });
 
-    // ── Vitals Monitor (full medical engine) ──
+    // ── Vitals Monitor (2001 life signs panel) ──
     (() => {
       const DPR = Math.min(2, window.devicePixelRatio || 1);
       const TAU = Math.PI * 2;
-      const PX_PER_MM = (96 / 25.4) * DPR;
 
-      const C = {
-        bg:"#050809",
-        grid1:"rgba(0,255,128,0.14)",
-        grid5:"rgba(0,255,128,0.28)",
-        ecg:"rgba(0,255,128,0.95)",
-        resp:"rgba(255,233,62,0.95)",
-        ple:"rgba(0,244,255,0.95)",
-        co2:"rgba(219,112,255,0.95)",
-        ibp:"rgba(255,84,64,0.95)",
-        text:"#e8f0ff"
-      };
-      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-      const rand = (a,b)=>a+Math.random()*(b-a);
+      // Lanes from the film: label color, grid color, label text
+      const LANES = [
+        { label:'CARDIO\nVASCULAR',     bg:'#3aa9b8', grid:'rgba(58,169,184,0.45)' },
+        { label:'METABOLIC\nLEVELS',    bg:'#c92020', grid:'rgba(201,32,32,0.55)'  },
+        { label:'CENTRAL\nNERV. SYSTEM',bg:'#1f7a6e', grid:'rgba(31,122,110,0.55)' },
+        { label:'PULMONARY\nFUNCTION',  bg:'#5d8db5', grid:'rgba(93,141,181,0.45)' },
+        { label:'SYSTEMS\nINTEGRATION', bg:'#c92020', grid:'rgba(201,32,32,0.55)'  },
+        { label:'LOCOMOTOR\nSYSTEM',    bg:'#7e7d2a', grid:'rgba(126,125,42,0.55)' }
+      ];
 
-      function ecgSampleBase(tMs, rrMs, opts = {}) {
-        const RR = Math.max(rrMs, 1);
-        const QRS = opts.QRSdur ?? 90, Pdur = 80;
-        const QT  = Math.max(280, Math.min(460, 400 * Math.sqrt(1000 / Math.max(600, RR))));
-        const tQRS = opts.tQRS ?? 0.42 * RR;
-        const tP   = opts.tP   ?? tQRS - 0.18 * RR;
-        const tT   = opts.tT   ?? tQRS + 0.30 * RR;
-        const gauss = (x, mu, s, amp) => amp * Math.exp(-0.5 * Math.pow((x - mu) / s, 2));
-        const ST  = opts.STelev ?? 0;
-        const P = (opts.noP ? 0 : gauss(tMs, tP, Pdur * 0.45, 0.12));
-        const Q = gauss(tMs, tQRS - 18, QRS * 0.18, -0.25);
-        const R = gauss(tMs, tQRS + 0, QRS * 0.12, 1.10 * (opts.Ramp ?? 1));
-        const S = gauss(tMs, tQRS + 20, QRS * 0.18, -0.35);
-        const T = gauss(tMs, tT, Math.max(60, QT * 0.35), 0.40);
-        const STseg = (tMs > tQRS + 10 && tMs < tQRS + 120) ? ST : 0;
-        return P + Q + R + S + T + STseg;
+      // Pseudo-random with seed (deterministic per pixel position)
+      function noise(x, seed) {
+        const v = Math.sin(x * 12.9898 + seed * 78.233) * 43758.5453;
+        return v - Math.floor(v);
       }
-      function plethPulse(t, T, amp, notch = 0.25) {
-        const x = (t % T) / T;
-        const up = Math.pow(Math.max(0, Math.min(1, x / 0.15)), 2.2);
-        const down = Math.pow(Math.max(0, Math.min(1, (1 - x) / 0.85)), 1.5);
-        let y = up * 1.2 + down * 0.6;
-        y -= Math.exp(-Math.pow((x - 0.35) / 0.05, 2)) * notch;
-        return y * amp;
+      // Smoothed noise (1D value noise)
+      function vnoise(x, seed) {
+        const xi = Math.floor(x);
+        const xf = x - xi;
+        const a = noise(xi, seed);
+        const b = noise(xi + 1, seed);
+        const u = xf * xf * (3 - 2 * xf);
+        return a * (1 - u) + b * u;
       }
-      function capnoSample(phase, et) {
-        if (phase < 0.35) return et * (phase / 0.35) * 0.95;
-        if (phase < 0.75) return et * (0.95 - 0.05 * (phase - 0.35) / 0.4);
-        const k = (phase - 0.75) / 0.25;
-        return et * (0.95 * (1 - k));
-      }
-      function ibpSample(t, T, sbp, dbp) {
-        const x = (t % T) / T, pp = sbp - dbp;
-        let y = dbp + pp * (1 - Math.exp(-x * 12));
-        y -= pp * 0.4 * Math.pow(x, 1.6);
-        y += pp * 0.10 * Math.exp(-Math.pow((x - 0.35) / 0.08, 2));
-        y -= pp * 0.06 * Math.exp(-Math.pow((x - 0.45) / 0.02, 2));
-        return y;
+      // Multi-octave noise
+      function fbm(x, seed, octaves) {
+        let v = 0, amp = 0.5, freq = 1;
+        for (let i = 0; i < octaves; i++) {
+          v += vnoise(x * freq, seed + i) * amp;
+          amp *= 0.5;
+          freq *= 2;
+        }
+        return v;
       }
 
-      class MonitorEngine {
+      // Each lane has a different waveform character
+      function laneSample(laneIdx, x, t) {
+        // x in pixels, t in ms — used to scroll
+        const u = x * 0.01 - t * 0.0005;
+        switch(laneIdx) {
+          case 0: { // CARDIO VASCULAR — slow undulating with occasional spikes
+            const base = fbm(u * 0.4, 11, 3) * 0.4 - 0.2;
+            const spike = Math.exp(-Math.pow(((u * 0.3) % 6) - 3, 2) * 4) * 0.6;
+            return base + spike + (Math.random() - 0.5) * 0.04;
+          }
+          case 1: { // METABOLIC LEVELS — high frequency noisy
+            return (fbm(u * 4, 22, 4) - 0.5) * 1.4 + (Math.random() - 0.5) * 0.15;
+          }
+          case 2: { // CENTRAL NERV SYSTEM — small steady jagged pulses
+            const tooth = ((u * 1.5) % 1);
+            const saw = (tooth < 0.1) ? -tooth * 6 : (tooth - 0.1) * 0.2;
+            return saw * 0.35 + (Math.random() - 0.5) * 0.05;
+          }
+          case 3: { // PULMONARY FUNCTION — medium jittery with downward sloping pulses
+            const pulse = Math.sin(u * 1.8) * 0.4;
+            return pulse + (fbm(u * 3, 33, 3) - 0.5) * 0.6 + (Math.random() - 0.5) * 0.1;
+          }
+          case 4: { // SYSTEMS INTEGRATION — stepped/blocky variations
+            const stepped = Math.floor(fbm(u * 0.8, 44, 2) * 5) / 5;
+            return (stepped - 0.5) * 0.9 + (Math.random() - 0.5) * 0.08;
+          }
+          case 5: { // LOCOMOTOR SYSTEM — noisy, with intentional dropouts
+            const drop = Math.sin(u * 0.3) > 0.3 ? 1 : 0;
+            return ((fbm(u * 5, 55, 4) - 0.5) * 1.3) * drop + (Math.random() - 0.5) * 0.12 * drop;
+          }
+        }
+        return 0;
+      }
+
+      class FilmMonitor {
         constructor(canvas) {
           this.c = canvas;
-          this.ctx = this.c.getContext("2d", { alpha: false });
+          this.ctx = canvas.getContext('2d', { alpha: false });
           this.w = 0; this.h = 0;
-          this.lastRAF = performance.now();
-          this.running = true;
-          this.alarmPhase = 0;
           this.tMs = 0;
           this.headX = 0;
-          this.state = {
-            speedMM:25, gainMMmV:10, coupling:true,
-            HR:72, RR:12, SpO2:98, EtCO2:38, SBP:120, DBP:80, Temp:36.8, PI:4,
-            rhythm:"Sinus", preset:"Normal",
-            phaseRR:0, phaseResp:0,
-            nibpTimer:0, nibpReading:null, nibpMeasuring:false
-          };
-          this.waves = [
-            {name:"ECG",  color:C.ecg},
-            {name:"RESP", color:C.resp},
-            {name:"Pleth",color:C.ple},
-            {name:"CO\u2082", color:C.co2},
-            {name:"IBP", color:C.ibp},
-          ];
+          this.lastRAF = performance.now();
           this.resize();
-          window.addEventListener("resize", () => this.resize());
-          // Re-resize after fonts/layout settle
+          window.addEventListener('resize', () => this.resize());
           setTimeout(() => this.resize(), 100);
-          requestAnimationFrame((t)=>this.loop(t));
+          requestAnimationFrame((t) => this.loop(t));
         }
 
-        resize(){
+        resize() {
           const r = this.c.getBoundingClientRect();
           this.w = Math.max(1, Math.floor(r.width * DPR));
           this.h = Math.max(1, Math.floor(r.height * DPR));
-          this.c.width = this.w; this.c.height = this.h;
+          this.c.width = this.w;
+          this.c.height = this.h;
         }
 
-        stepPhys(dt){
-          const s=this.state;
-          if(!s.coupling) return;
-          const MAP = s.DBP + (s.SBP - s.DBP) / 3;
-          const mapErr = (95 - MAP);
-          s.HR += mapErr * 0.02 * (dt/1000);
-          s.HR += Math.sin(s.phaseResp * TAU) * 0.05 * 72 * (dt/1000);
-          if(s.SpO2 < 92){ const hyp = 92 - s.SpO2; s.HR += hyp*0.15*(dt/1000); s.RR += hyp*0.06*(dt/1000); }
-          if(s.EtCO2 > 45){ const dh  = s.EtCO2-45; s.RR += dh*0.08*(dt/1000); s.HR += dh*0.03*(dt/1000); }
-          s.HR += (s.Temp - 37) * 2.0 * (dt/1000);
-          const etTarget = clamp(38 * (12 / Math.max(6, s.RR)), 20, 55);
-          s.EtCO2 += (etTarget - s.EtCO2) * 0.15 * (dt/1000);
-          s.HR = clamp(s.HR, 30, 220);
-          s.RR = clamp(s.RR, 4, 40);
-        }
-
-        beatDescriptor(rrMsNom, tNowMs){
-          return { noP:false, QRSdur:90, Ramp:1, ST:0, rr: rrMsNom, pvc:false, af:false, flutter:false, asystole:false };
-        }
-
-        loop(now){
+        loop(now) {
           const dt = Math.min(60, now - this.lastRAF);
           this.lastRAF = now;
-          if(this.running) this.frame(dt);
-          requestAnimationFrame((t)=>this.loop(t));
+          this.frame(dt);
+          requestAnimationFrame((t) => this.loop(t));
         }
 
-        frame(dt){
-          const s=this.state, ctx=this.ctx, w=this.w, h=this.h;
+        frame(dt) {
+          const ctx = this.ctx;
+          const w = this.w, h = this.h;
           if (w < 2 || h < 2) return;
 
           this.tMs += dt;
-          this.alarmPhase += dt;
-          const pxPerMs = (s.speedMM * PX_PER_MM) / 1000;
-          this.headX = (this.headX + dt * pxPerMs) % w;
 
-          this.stepPhys(dt);
+          // Background
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, w, h);
 
-          const mVtoPx  = s.gainMMmV * PX_PER_MM;
-          const padT = 22*DPR, padB = 22*DPR, lanes = this.waves.length;
-          const laneH = (h - padT - padB) / lanes;
+          const labelW = Math.min(220 * DPR, w * 0.22);
+          const lanes = LANES.length;
+          const padY = 4 * DPR;
+          const gap = 4 * DPR;
+          const laneH = (h - (lanes - 1) * gap - padY * 2) / lanes;
 
-          ctx.fillStyle = C.bg; ctx.fillRect(0,0,w,h);
+          for (let i = 0; i < lanes; i++) {
+            const lane = LANES[i];
+            const y0 = padY + i * (laneH + gap);
+            const mid = y0 + laneH / 2;
 
-          const tNow = this.tMs;
-          const xHead = this.headX;
-          const rrMsNom = 60000 / s.HR;
-          const beat = this.beatDescriptor(rrMsNom, tNow);
-          const rrMs = beat.rr;
-          const respMs = 60000 / s.RR;
-          s.phaseRR   = (s.phaseRR   + dt/rrMs)%1;
-          s.phaseResp = (s.phaseResp + dt/respMs)%1;
+            // Label block
+            ctx.fillStyle = lane.bg;
+            ctx.fillRect(0, y0, labelW, laneH);
 
-          const stepX = 2 * DPR;
-          for(let i=0;i<lanes;i++){
-            const lane = this.waves[i];
-            const y0 = padT + i * laneH;
-            const mid = y0 + laneH*0.55;
-
-            if(lane.name==="ECG"){
-              const mm = PX_PER_MM;
-              ctx.strokeStyle=C.grid1; ctx.lineWidth=1; ctx.beginPath();
-              for(let x=0;x<w;x+=mm){ ctx.moveTo(x+0.5,y0); ctx.lineTo(x+0.5,y0+laneH); }
-              for(let y=y0;y<y0+laneH;y+=mm){ ctx.moveTo(0,y+0.5); ctx.lineTo(w,y+0.5); }
-              ctx.stroke();
-              ctx.strokeStyle=C.grid5; ctx.lineWidth=1.5; ctx.beginPath();
-              for(let x=0;x<w;x+=mm*5){ ctx.moveTo(x+0.5,y0); ctx.lineTo(x+0.5,y0+laneH); }
-              for(let y=y0;y<y0+laneH;y+=mm*5){ ctx.moveTo(0,y+0.5); ctx.lineTo(w,y+0.5); }
-              ctx.stroke();
+            // Label text (two lines)
+            const lines = lane.label.split('\n');
+            ctx.fillStyle = '#fff';
+            ctx.font = `700 ${13 * DPR}px 'Eurostile-Extended-Regular', system-ui, sans-serif`;
+            ctx.textBaseline = 'middle';
+            const lineH = 16 * DPR;
+            const startY = mid - ((lines.length - 1) * lineH) / 2;
+            for (let li = 0; li < lines.length; li++) {
+              ctx.fillText(lines[li], 14 * DPR, startY + li * lineH);
             }
 
-            ctx.strokeStyle = lane.color; ctx.lineWidth = 2*DPR; ctx.beginPath();
-            for(let x=0;x<=w;x+=stepX){
-              const dtPx = (xHead - x + w) % w;
-              const tAtX = tNow - dtPx / ((s.speedMM * PX_PER_MM)/1000);
-              let yVal = 0;
-              if(lane.name==="ECG"){
-                const tInCycle = ((tAtX % rrMs) + rrMs) % rrMs;
-                yVal = ecgSampleBase(tInCycle, rrMs, { noP:beat.noP, QRSdur:beat.QRSdur, Ramp:beat.Ramp, STelev:beat.ST }) * mVtoPx * 0.1;
-              } else if(lane.name==="RESP"){
-                const phase = ((tAtX % respMs) + respMs) % respMs / respMs;
-                yVal = Math.sin(phase*TAU) * PX_PER_MM * 4;
-              } else if(lane.name==="Pleth"){
-                const T = rrMs, tBeat = ((tAtX % T) + T) % T;
-                const amp = PX_PER_MM * (0.5 + 0.08 * (s.SBP - 100) / 40 + 0.15 * (s.PI / 5));
-                yVal = -plethPulse(tBeat, T, amp);
-              } else if(lane.name==="CO\u2082"){
-                const phase = ((tAtX % respMs) + respMs) % respMs / respMs;
-                yVal = -capnoSample(phase, s.EtCO2) * (PX_PER_MM * 0.1);
-              } else if(lane.name==="IBP"){
-                const T = rrMs, tBeat = ((tAtX % T) + T) % T;
-                const v = ibpSample(tBeat, T, s.SBP, s.DBP);
-                yVal = -(v - (s.DBP + (s.SBP - s.DBP)/2)) * (PX_PER_MM * 0.2);
-              }
-              const y = mid + yVal;
-              if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+            // Grid background area
+            const gx0 = labelW;
+            const gw = w - labelW;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(gx0, y0, gw, laneH);
+
+            // Tinted grid overlay
+            const cellW = 18 * DPR;
+            const cellH = laneH / 4;
+            ctx.strokeStyle = lane.grid;
+            ctx.lineWidth = 1 * DPR;
+            ctx.beginPath();
+            for (let x = gx0; x <= gx0 + gw; x += cellW) {
+              ctx.moveTo(x + 0.5, y0);
+              ctx.lineTo(x + 0.5, y0 + laneH);
+            }
+            for (let y = y0; y <= y0 + laneH; y += cellH) {
+              ctx.moveTo(gx0, y + 0.5);
+              ctx.lineTo(gx0 + gw, y + 0.5);
             }
             ctx.stroke();
 
-            ctx.fillStyle=C.text;
-            ctx.font=`600 ${12*DPR}px 'Eurostile-Extended-Regular', system-ui, sans-serif`;
-            ctx.fillText(lane.name, 10*DPR, y0 + 14*DPR);
-            ctx.fillStyle=lane.color; ctx.beginPath(); ctx.arc(xHead, mid, 2.5*DPR, 0, TAU); ctx.fill();
+            // White lifeline trace
+            ctx.strokeStyle = 'rgba(255,255,255,0.95)';
+            ctx.lineWidth = 1.6 * DPR;
+            ctx.shadowColor = 'rgba(255,255,255,0.4)';
+            ctx.shadowBlur = 2 * DPR;
+            ctx.beginPath();
+            const stepX = 2 * DPR;
+            const amp = laneH * 0.38;
+            for (let x = 0; x <= gw; x += stepX) {
+              const sample = laneSample(i, x, this.tMs);
+              const y = mid + sample * amp;
+              if (x === 0) ctx.moveTo(gx0 + x, y);
+              else ctx.lineTo(gx0 + x, y);
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
           }
         }
       }
 
-      const canvas = document.getElementById("vitals-canvas");
-      if (canvas) new MonitorEngine(canvas);
+      const canvas = document.getElementById('vitals-canvas');
+      if (canvas) new FilmMonitor(canvas);
     })();
   </script>
 </body>
