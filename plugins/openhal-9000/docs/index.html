@@ -432,6 +432,97 @@
         0 12px 22px 0px rgba(0,0,0,0.55);
     }
 
+    /* ── Logic Memory Terminal (film-accurate) ── */
+    .lmt-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+    .lmt-frame {
+      background: #050505;
+      border-left: 24px solid #b51818;
+      border-right: 24px solid #b51818;
+      padding: 0;
+      position: relative;
+    }
+    .lmt-headers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 24px 32px 18px;
+      border-bottom: 1px solid rgba(181,24,24,0.4);
+    }
+    .lmt-header {
+      font-family: 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: #ff2a2a;
+      text-transform: uppercase;
+      filter: blur(0.4px);
+    }
+    .lmt-header.right { text-align: right; padding-right: 8%; }
+    .lmt-rows {
+      padding: 28px 32px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .lmt-row {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      align-items: end;
+    }
+    .lmt-bar {
+      position: relative;
+      height: 150px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f4ee 30%, #e8e6dc 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0 6px;
+      box-shadow:
+        /* right-side depth for 3D feel */
+        4px 0 0 0 rgba(255,255,255,0.08),
+        5px 0 8px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,1),
+        inset -2px 0 4px rgba(0,0,0,0.15);
+    }
+    .lmt-bar .bnum {
+      font-family: 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: 0;
+    }
+    .lmt-bar .blabel {
+      font-family: 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: #555;
+      letter-spacing: 0;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .lmt-bar .blabel sup,
+    .lmt-bar .blabel sub {
+      font-size: 7px;
+    }
+    .lmt-bar::after {
+      /* small red LED below the bar */
+      content: '';
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 4px;
+      background: #ff2a2a;
+      box-shadow: 0 0 6px rgba(255,30,30,0.7);
+    }
+
     /* ── Zero Gravity Toilet style instructions ── */
     .zg-section {
       max-width: 900px;
@@ -720,6 +811,47 @@
         <button class="btn" data-feature="config">Zero Config</button>
         <button class="btn" data-feature="character">In Character</button>
         <button class="btn" data-feature="voice">Voice Control</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LOGIC MEMORY TERMINAL ═══ -->
+  <section class="lmt-section">
+    <div class="section-label">Logic Memory Center</div>
+    <div class="lmt-frame">
+      <div class="lmt-headers">
+        <div class="lmt-header">IV-3 Logic Terminal</div>
+        <div class="lmt-header right">Memory Terminal</div>
+      </div>
+      <div class="lmt-rows">
+        <div class="lmt-row">
+          <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/<sup>1</sup>&frasl;<sub>2</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/<sup>1</sup>&frasl;<sub>2</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">MT</span></div>
+        </div>
+        <div class="lmt-row">
+          <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">LT/<sup>1</sup>&frasl;<sub>2</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">LT/<sup>1</sup>&frasl;<sub>2</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">11</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">12</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
+          <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">11</span><span class="blabel">MT</span></div>
+          <div class="lmt-bar"><span class="bnum">12</span><span class="blabel">MT</span></div>
+        </div>
       </div>
     </div>
   </section>
