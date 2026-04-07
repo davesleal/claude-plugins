@@ -214,7 +214,7 @@
       background: radial-gradient(ellipse at center, #d6d4cc 0%, #a8a59a 70%, #7a786d 100%);
       position: relative;
       overflow: hidden;
-      height: 760px;
+      height: 620px;
     }
     .briefing-sphere-wrap {
       position: absolute;
@@ -265,8 +265,6 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      perspective: 1400px;
-      transform-style: preserve-3d;
     }
     .briefing-svg .svg-headline {
       font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
@@ -275,10 +273,6 @@
       fill: #d62828;
       letter-spacing: 8px;
       text-transform: uppercase;
-      /* Tilt slightly forward to mimic dome curvature */
-      transform: perspective(1400px) rotateX(14deg);
-      transform-origin: 50% 60%;
-      transform-box: fill-box;
     }
     .briefing-svg .svg-subhead {
       font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
@@ -295,18 +289,13 @@
       fill: #d62828;
       letter-spacing: 10px;
       text-transform: uppercase;
-      /* Tilt backward to mimic the lower hemisphere of the dome */
-      transform: perspective(1400px) rotateX(-14deg);
-      transform-origin: 50% 40%;
-      transform-box: fill-box;
     }
     /* HTML body — numbered list, EXPLOSIVE BOLTS movie format */
     .briefing-body {
       position: absolute;
-      top: 43%;
+      top: 39%;
       left: 50%;
-      transform: translate(-50%, 0) perspective(1400px) rotateX(3deg);
-      transform-origin: top center;
+      transform: translate(-50%, 0);
       max-width: 540px;
       width: 100%;
       font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
@@ -990,14 +979,14 @@
         <span class="briefing-rivet br"></span>
       </div>
     </div>
-    <svg class="briefing-svg" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid meet">
+    <svg class="briefing-svg" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid meet">
       <defs>
         <!-- Top arc (CAUTION) — gentle upward bow -->
-        <path id="briefing-top-arc" d="M 280 220 Q 600 200 920 220" />
+        <path id="briefing-top-arc" d="M 280 150 Q 600 130 920 150" />
         <!-- Subtitle arc — wider and flatter so the longer text fits -->
-        <path id="briefing-sub-arc" d="M 140 284 Q 600 270 1060 284" />
-        <!-- Bottom arc (SYSTEM BRIEFING) — pushed further down -->
-        <path id="briefing-bot-arc" d="M 280 600 Q 600 622 920 600" />
+        <path id="briefing-sub-arc" d="M 140 214 Q 600 200 1060 214" />
+        <!-- Bottom arc (SYSTEM BRIEFING) — close to the body, sandwich tight -->
+        <path id="briefing-bot-arc" d="M 280 470 Q 600 492 920 470" />
       </defs>
       <text class="svg-headline">
         <textPath href="#briefing-top-arc" startOffset="50%" text-anchor="middle">CAUTION</textPath>
