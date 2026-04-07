@@ -38,74 +38,80 @@
       overflow-x: hidden;
     }
 
-    /* ── HAL 9000 Eye (Giana's CSS — exact original dimensions) ── */
+    /* ── HAL 9000 Eye (simplified — chrome bezel + dome + curved glare) ── */
     .hal9000 {
       position: relative;
-      width: 200px;
-      height: 200px;
+      width: 150px;
+      height: 150px;
       margin: 0 auto;
       border-radius: 50%;
-      background: linear-gradient(150deg, #ced6d8 0%, #222127 100%);
-      box-shadow: inset 0 1px 1px rgba(255,255,255,.6), inset 0 -1px 1px rgba(0,0,0,.4), 1px 5px 15px rgba(0,0,0,.6);
-      transform: scale(0.78);
-      transform-origin: center;
+      /* Chrome bezel ring */
+      background:
+        radial-gradient(circle at 50% 40%, #1a0508 0%, #0a0204 60%, #050102 100%),
+        linear-gradient(180deg, #d8d8d8 0%, #999 50%, #c0c0c0 100%);
+      padding: 8px;
+      box-shadow:
+        /* outer chrome highlights */
+        inset 0 2px 2px rgba(255,255,255,0.6),
+        inset 0 -2px 2px rgba(0,0,0,0.35),
+        0 6px 18px rgba(0,0,0,0.7);
     }
-    .hal9000:before {
-      position: absolute; top: 50%; left: 50%;
-      width: 184px; height: 184px; margin: -92px 0 0 -92px;
-      content: ' '; border-radius: 50%;
-      background: linear-gradient(150deg, #4f565d 0%, #161314 100%);
-      box-shadow: inset 0 1px 1px rgba(0,0,0,.15), inset 0 -1px 1px rgba(255,255,255,.25);
-    }
-    .hal9000:after {
-      position: absolute; top: 50%; left: 50%;
-      width: 168px; height: 168px; margin: -84px 0 0 -84px;
-      content: ' '; border-radius: 50%;
-      background: radial-gradient(ellipse at center, #d80018 0%, #9c0109 20%, #000 60%, #000 100%);
-      box-shadow: 0 -4px 2px -2px rgba(224,239,247,.6);
-    }
-    .hal9000 .hal-eye {
-      position: absolute; z-index: 1; top: 50%; left: 50%;
-      width: 144px; height: 144px; margin: -72px 0 0 -72px;
+    /* Outer chrome bezel ring */
+    .hal9000::before {
+      content: '';
+      position: absolute;
+      inset: 0;
       border-radius: 50%;
-      box-shadow: 0 -4px 3px -1px rgba(240,240,255,.55);
+      background: linear-gradient(160deg, #e8e8e8 0%, #888 35%, #444 50%, #aaa 70%, #e8e8e8 100%);
+      z-index: 0;
     }
-    .hal9000 .hal-eye:before {
-      position: absolute; top: 50%; left: 50%;
-      width: 128px; height: 128px; margin: -64px 0 0 -64px;
-      content: ' '; border-radius: 50%;
-      box-shadow: -1px -3px 2px -1px rgba(240,240,255,.45);
+    /* Dark dome with red glow */
+    .hal9000::after {
+      content: '';
+      position: absolute;
+      inset: 9px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 55%,
+          #ff3a00 0%,
+          #d40010 6%,
+          #660003 18%,
+          #2a0001 35%,
+          #160001 60%,
+          #0a0001 100%);
+      box-shadow:
+        inset 0 4px 8px rgba(255,255,255,0.18),
+        inset 0 -3px 6px rgba(0,0,0,0.6);
+      z-index: 1;
     }
-    .hal9000 .hal-eye:after {
-      position: absolute; top: 50%; left: 50%;
-      width: 24px; height: 24px; margin: -12px 0 0 -12px;
-      content: ' '; border-radius: 50%;
-      background: radial-gradient(ellipse at center, #fff0fc 0%, #ffe091 20%, #ffe26c 45%, #fdd247 100%);
-      box-shadow: 1px -2px 15px 5px rgba(253,210,71,.25), -1px 2px 13px 13px rgba(255,0,4,.7);
+    /* Glare SVG container */
+    .hal-glare {
+      position: absolute;
+      inset: 9px;
+      border-radius: 50%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 2;
     }
-    .hal9000 .hal-reflect {
-      font-family: 'Open Sans', system-ui, sans-serif;
-      position: absolute; z-index: 2; top: 50%; left: 50%;
-      overflow: hidden; width: 128px; height: 128px; margin: -64px 0 0 -64px;
-      color: #eefcfd; border-radius: 50%;
-    }
-    .hal9000 .hal-reflect:before,
-    .hal9000 .hal-reflect:after {
-      position: absolute; display: block; width: 300px;
-      content: '\2584\2584\00a0\00a0\00a0\00a0\2580\2580\00a0\00a0\00a0\00a0\2584\2584';
-      text-align: center;
-    }
-    .hal9000 .hal-reflect:before {
-      font-size: 30px; top: -5px; left: -86px;
-      transform: matrix3d(.45,0,0,0,0,.25,0,.0075,0,0,1,0,0,0,0,1);
-      color: rgba(238,252,253,.45);
-      text-shadow: 3px 3px 6px, 7px 7px 6px, -3px -3px 4px, -7px -7px 4px, 4px -4px 3px, -4px 4px 3px, 3px 34px 6px, 3px 34px 6px;
-    }
-    .hal9000 .hal-reflect:after {
-      font-size: 30px; top: 14px; left: -84px;
-      transform: matrix3d(.3,0,0,0,0,.15,0,.0075,0,0,1,0,0,0,0,1);
-      color: rgba(238,252,253,.35);
-      text-shadow: 5px 5px 5px, 8px 8px 7px, -5px -5px 5px, -8px -8px 7px, 4px -5px 4px, -5px 4px 5px, 2px 37px 5px, 2px 37px 5px;
+    .hal-glare svg { width: 100%; height: 100%; display: block; }
+    /* Bright pupil */
+    .hal-pupil {
+      position: absolute;
+      top: 55%; left: 50%;
+      width: 18px; height: 18px;
+      margin: -9px 0 0 -9px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%,
+        #fff 0%,
+        #ffe066 22%,
+        #ffaa22 50%,
+        #ff5500 75%,
+        #cc0000 100%);
+      box-shadow:
+        0 0 6px rgba(255,200,40,0.9),
+        0 0 14px rgba(255,80,0,0.7),
+        0 0 22px rgba(255,0,0,0.5);
+      z-index: 3;
     }
 
     /* Flicker animation when speaking */
@@ -116,8 +122,7 @@
       100% { opacity: 0; }
     }
     .hal-animation {
-      position: absolute; top: 50%; left: 50%;
-      width: 140px; height: 140px; margin: -70px 0 0 -70px;
+      position: absolute; inset: 9px;
       border-radius: 50%;
       background: radial-gradient(#79b4ba, #47696d, #890000);
       mix-blend-mode: color-dodge;
@@ -167,10 +172,9 @@
     }
     .halbox .hal9000 {
       position: absolute;
-      left: 50%; bottom: 110px;
+      left: 50%; bottom: 115px;
       margin: 0;
-      transform: translateX(-50%) scale(0.78);
-      transform-origin: bottom center;
+      transform: translateX(-50%);
     }
     .speakerbox {
       position: absolute; left: 0; bottom: 0;
@@ -501,9 +505,20 @@
       <div class="halbox">
         <div class="nameplate">HAL 9000&nbsp;&nbsp;</div>
         <div class="hal9000">
-          <div class="hal-eye">
-            <div class="hal-reflect"></div>
+          <div class="hal-glare">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+              <!-- 3 curved arcs across the upper half of the dome, mimicking studio glare -->
+              <path d="M 18 32 Q 50 18 82 32" stroke="rgba(255,255,255,0.42)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+              <path d="M 22 44 Q 50 30 78 44" stroke="rgba(255,255,255,0.32)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+              <path d="M 28 54 Q 50 42 72 54" stroke="rgba(255,255,255,0.22)" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- subtle scattered specks -->
+              <circle cx="38" cy="74" r="0.9" fill="rgba(255,255,255,0.35)"/>
+              <circle cx="44" cy="78" r="0.7" fill="rgba(255,255,255,0.28)"/>
+              <circle cx="52" cy="76" r="0.6" fill="rgba(255,255,255,0.30)"/>
+              <circle cx="60" cy="79" r="0.7" fill="rgba(255,255,255,0.25)"/>
+            </svg>
           </div>
+          <div class="hal-pupil"></div>
           <div class="hal-animation" id="hal-animation"></div>
         </div>
         <div class="speakerbox"><div class="speakerbg"><div class="speakerlat"></div><div class="speakerlong"></div></div></div>
