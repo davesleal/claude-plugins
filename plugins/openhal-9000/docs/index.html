@@ -6,20 +6,23 @@
   <meta name="description" content="OpenHAL 9000 — A Claude Code plugin that gives Claude the voice of HAL 9000.">
   <meta name="theme-color" content="#0b0f13">
   <title>OpenHAL 9000 — Give Claude a Voice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23cc2222'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ffcc33'/%3E%3C/svg%3E">
   <style>
     @font-face {
       font-family: 'Eurostile-Extended-Regular';
       font-style: normal;
       font-weight: 400;
-      src: url('https://strengthofone.com/fonts/Eurostile-Extended-Regular.woff2') format('woff2');
+      src: url('https://strengthofone.com/2001/../fonts/Eurostile-Extended-Regular.woff2') format('woff2');
       font-display: swap;
     }
     @font-face {
       font-family: 'Eurostile_Extd_Black';
       font-style: normal;
       font-weight: 900;
-      src: url('https://strengthofone.com/fonts/Eurostile_Extd_Black.woff2') format('woff2');
+      src: url('https://strengthofone.com/2001/../fonts/Eurostile_Extd_Black.woff2') format('woff2');
       font-display: swap;
     }
 
@@ -38,8 +41,8 @@
     /* ── HAL 9000 Eye (Giana's CSS — exact, no animations) ── */
     .hal9000 {
       position: relative;
-      width: 200px;
-      height: 200px;
+      width: 170px;
+      height: 170px;
       margin: 0 auto;
       border-radius: 50%;
       background: linear-gradient(150deg, #ced6d8 0%, #222127 100%);
@@ -47,33 +50,33 @@
     }
     .hal9000:before {
       position: absolute; top: 50%; left: 50%;
-      width: 184px; height: 184px; margin: -92px 0 0 -92px;
+      width: 154px; height: 154px; margin: -77px 0 0 -77px;
       content: ' '; border-radius: 50%;
       background: linear-gradient(150deg, #4f565d 0%, #161314 100%);
       box-shadow: inset 0 1px 1px rgba(0,0,0,.15), inset 0 -1px 1px rgba(255,255,255,.25);
     }
     .hal9000:after {
       position: absolute; top: 50%; left: 50%;
-      width: 168px; height: 168px; margin: -84px 0 0 -84px;
+      width: 140px; height: 140px; margin: -70px 0 0 -70px;
       content: ' '; border-radius: 50%;
       background: radial-gradient(ellipse at center, #d80018 0%, #9c0109 20%, #000 60%, #000 100%);
       box-shadow: 0 -4px 2px -2px rgba(224,239,247,.6);
     }
     .hal9000 .hal-eye {
       position: absolute; z-index: 1; top: 50%; left: 50%;
-      width: 144px; height: 144px; margin: -72px 0 0 -72px;
+      width: 120px; height: 120px; margin: -60px 0 0 -60px;
       border-radius: 50%;
       box-shadow: 0 -4px 3px -1px rgba(240,240,255,.55);
     }
     .hal9000 .hal-eye:before {
       position: absolute; top: 50%; left: 50%;
-      width: 128px; height: 128px; margin: -64px 0 0 -64px;
+      width: 106px; height: 106px; margin: -53px 0 0 -53px;
       content: ' '; border-radius: 50%;
       box-shadow: -1px -3px 2px -1px rgba(240,240,255,.45);
     }
     .hal9000 .hal-eye:after {
       position: absolute; top: 50%; left: 50%;
-      width: 24px; height: 24px; margin: -12px 0 0 -12px;
+      width: 20px; height: 20px; margin: -10px 0 0 -10px;
       content: ' '; border-radius: 50%;
       background: radial-gradient(ellipse at center, #fff0fc 0%, #ffe091 20%, #ffe26c 45%, #fdd247 100%);
       box-shadow: 1px -2px 15px 5px rgba(253,210,71,.25), -1px 2px 13px 13px rgba(255,0,4,.7);
@@ -81,7 +84,7 @@
     .hal9000 .hal-reflect {
       font-family: 'Open Sans', system-ui, sans-serif;
       position: absolute; z-index: 2; top: 50%; left: 50%;
-      overflow: hidden; width: 128px; height: 128px; margin: -64px 0 0 -64px;
+      overflow: hidden; width: 106px; height: 106px; margin: -53px 0 0 -53px;
       color: #eefcfd; border-radius: 50%;
     }
     .hal9000 .hal-reflect:before,
@@ -91,17 +94,38 @@
       text-align: center;
     }
     .hal9000 .hal-reflect:before {
-      font-size: 30px; top: -5px; left: -86px;
+      font-size: 24px; top: -4px; left: -96px;
       transform: matrix3d(.45,0,0,0,0,.25,0,.0075,0,0,1,0,0,0,0,1);
       color: rgba(238,252,253,.45);
       text-shadow: 3px 3px 6px, 7px 7px 6px, -3px -3px 4px, -7px -7px 4px, 4px -4px 3px, -4px 4px 3px, 3px 34px 6px, 3px 34px 6px;
     }
     .hal9000 .hal-reflect:after {
-      font-size: 30px; top: 14px; left: -84px;
+      font-size: 24px; top: 10px; left: -94px;
       transform: matrix3d(.3,0,0,0,0,.15,0,.0075,0,0,1,0,0,0,0,1);
       color: rgba(238,252,253,.35);
       text-shadow: 5px 5px 5px, 8px 8px 7px, -5px -5px 5px, -8px -8px 7px, 4px -5px 4px, -5px 4px 5px, 2px 37px 5px, 2px 37px 5px;
     }
+
+    /* Flicker animation when speaking */
+    @keyframes flicker {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .hal-animation {
+      position: absolute; top: 50%; left: 50%;
+      width: 140px; height: 140px; margin: -70px 0 0 -70px;
+      border-radius: 50%;
+      background: radial-gradient(#79b4ba, #47696d, #890000);
+      mix-blend-mode: color-dodge;
+      opacity: 0;
+      z-index: 3;
+      transition: 500ms;
+      pointer-events: none;
+    }
+    .hal9000:hover .hal-animation { opacity: 1; }
+    .hal-animation.speaking { animation: flicker 3s infinite; }
 
     /* ── Housing Frame (Ryan LaBar) ── */
     .halborder {
@@ -119,30 +143,28 @@
       background: #1E1E1E;
       box-shadow: inset 0px 3px 5px 2px rgba(0,0,0,0.69);
     }
-    .label {
-      position: absolute; height: 35px; width: 168px;
+    .nameplate {
+      background: linear-gradient(90deg, #0094ce 50%, transparent 50%);
+      border: 1px solid #0094ce;
+      border-radius: 0;
+      color: #fff;
+      font-size: 28px;
+      font-family: 'Fjalla One', sans-serif;
+      line-height: 40px;
+      text-align: center;
+      text-indent: 0.85em;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke-width: 1px;
+      -webkit-text-stroke-color: #fff;
+      position: absolute;
       top: 15px; left: 15px;
-      border: 2px solid #aaa;
-      box-sizing: border-box;
-    }
-    .labelleft {
-      position: absolute; background: #30667C;
-      width: 50%; height: 100%; top: 0; left: 0;
-      text-align: right; color: #aaa;
-      font-size: 20px; font-family: helvetica, sans-serif;
-      text-transform: uppercase; font-weight: lighter;
-      padding: 6px 5px 0 0; box-sizing: border-box;
-    }
-    .labelright {
-      position: absolute; width: 50%; min-height: 100%;
-      top: 0; right: 0; text-align: left; color: #aaa;
-      font-size: 20px; font-family: helvetica, sans-serif;
-      font-weight: lighter; padding: 6px 0 0 0;
-      box-sizing: border-box;
+      width: 170px; height: 40px;
+      z-index: 100;
+      text-transform: uppercase;
     }
     .halbox .hal9000 {
       position: absolute;
-      left: 0; top: 120px;
+      left: 15px; top: 140px;
       margin: 0;
     }
     .speakerbox {
@@ -466,11 +488,12 @@
   <div class="hero">
     <div class="halborder">
       <div class="halbox">
-        <div class="label"><div class="labelleft">Hal</div><div class="labelright">&nbsp;9000</div></div>
+        <div class="nameplate">HAL 9000&nbsp;&nbsp;</div>
         <div class="hal9000">
           <div class="hal-eye">
             <div class="hal-reflect"></div>
           </div>
+          <div class="hal-animation" id="hal-animation"></div>
         </div>
         <div class="speakerbox"><div class="speakerbg"><div class="speakerlat"></div><div class="speakerlong"></div></div></div>
       </div>
@@ -610,10 +633,12 @@
       var played = false;
       var playBtn = document.getElementById('play-label');
       var eye = document.querySelector('.hal9000');
+      var anim = document.getElementById('hal-animation');
       function playGreeting() {
         if (played) return;
         played = true;
         playBtn.textContent = 'PLAYING...';
+        anim.classList.add('speaking');
         fetch('hal-greeting.wav')
           .then(function(r) { return r.arrayBuffer(); })
           .then(function(buf) {
@@ -625,11 +650,13 @@
               source.start(0);
               source.onended = function() {
                 playBtn.textContent = 'HAL HAS SPOKEN';
+                anim.classList.remove('speaking');
               };
             });
           })
           .catch(function() {
             playBtn.textContent = '\u25B6 CLICK TO HEAR HAL SPEAK';
+            anim.classList.remove('speaking');
             played = false;
           });
       }
