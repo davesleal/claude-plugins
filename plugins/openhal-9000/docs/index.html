@@ -434,9 +434,10 @@
 
     /* ── Logic Memory Terminal (film-accurate, wide red stripe) ── */
     .lmt-section {
+      max-width: none !important;
       width: 100%;
-      margin: 0;
-      padding: 80px 0;
+      margin: 0 !important;
+      padding: 80px 0 !important;
       background: #000;
       position: relative;
     }
@@ -445,17 +446,24 @@
       margin: 0 auto;
       padding: 0 40px;
       position: relative;
+      display: flex;
+      justify-content: center;
     }
     /* Top label boxes (4 groups) */
     .lmt-top-labels, .lmt-bot-labels {
-      display: grid;
-      grid-template-columns: 5fr 2fr 6fr 6fr;
-      gap: 24px;
-      max-width: 70%;
-      margin: 0 auto;
+      display: flex;
+      gap: 28px;
+      align-items: stretch;
     }
     .lmt-top-labels { margin-bottom: 32px; }
     .lmt-bot-labels { margin-top: 32px; }
+    .lmt-label-box {
+      flex: 0 0 auto;
+      width: auto;
+    }
+    .lmt-label-box.g5 { width: calc(5 * 26px + 4 * 8px); }
+    .lmt-label-box.g2 { width: calc(2 * 26px + 1 * 8px); }
+    .lmt-label-box.g6 { width: calc(6 * 26px + 5 * 8px); }
     .lmt-label-box {
       border: 1.5px solid #b51818;
       height: 90px;
@@ -489,10 +497,10 @@
       width: 100%;
       display: flex;
       align-items: stretch;
+      justify-content: center;
       gap: 40px;
     }
     .lmt-bars-area {
-      flex: 0 0 70%;
       background: #000;
       padding: 24px 28px 30px;
       display: flex;
@@ -500,24 +508,21 @@
       gap: 18px;
     }
     .lmt-row {
-      display: grid;
-      grid-template-columns: 5fr 2fr 6fr 6fr;
-      gap: 24px;
-      align-items: end;
+      display: flex;
+      gap: 28px;
+      align-items: flex-end;
+      justify-content: flex-start;
     }
     .lmt-group {
-      display: grid;
-      gap: 6px;
+      display: flex;
+      gap: 8px;
     }
-    .lmt-group.g5 { grid-template-columns: repeat(5, 1fr); }
-    .lmt-group.g2 { grid-template-columns: repeat(2, 1fr); }
-    .lmt-group.g6 { grid-template-columns: repeat(6, 1fr); }
     .lmt-bar {
       position: relative;
+      flex: 0 0 26px;
       height: 200px;
-      width: 100%;
-      max-width: 28px;
-      margin: 0 auto;
+      width: 26px;
+      margin: 0;
       background: linear-gradient(180deg, #ffffff 0%, #f4f4ee 30%, #e8e6dc 100%);
       display: flex;
       flex-direction: column;
@@ -912,10 +917,10 @@
   <section class="lmt-section">
     <div class="lmt-inner">
       <div class="lmt-top-labels">
-        <div class="lmt-label-box"><div class="lmt-label-text">IV-1 Logic<br>Terminal</div></div>
-        <div class="lmt-label-box"><div class="lmt-label-text">IV-2 Logic<br>Terminal</div></div>
-        <div class="lmt-label-box"><div class="lmt-label-text">IV-3 Logic<br>Terminal</div></div>
-        <div class="lmt-label-box"><div class="lmt-label-text">Memory<br>Terminal</div></div>
+        <div class="lmt-label-box g5"><div class="lmt-label-text">IV-1 Logic<br>Terminal</div></div>
+        <div class="lmt-label-box g2"><div class="lmt-label-text">IV-2 Logic<br>Terminal</div></div>
+        <div class="lmt-label-box g6"><div class="lmt-label-text">IV-3 Logic<br>Terminal</div></div>
+        <div class="lmt-label-box g6"><div class="lmt-label-text">Memory<br>Terminal</div></div>
       </div>
     </div>
 
@@ -993,10 +998,10 @@
 
     <div class="lmt-inner">
       <div class="lmt-bot-labels">
-        <div class="lmt-label-box"></div>
-        <div class="lmt-label-box"></div>
-        <div class="lmt-label-box"></div>
-        <div class="lmt-label-box"></div>
+        <div class="lmt-label-box g5"></div>
+        <div class="lmt-label-box g2"></div>
+        <div class="lmt-label-box g6"></div>
+        <div class="lmt-label-box g6"></div>
       </div>
     </div>
   </section>
