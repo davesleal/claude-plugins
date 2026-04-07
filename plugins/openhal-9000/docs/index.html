@@ -214,7 +214,7 @@
       background: radial-gradient(ellipse at center, #d6d4cc 0%, #a8a59a 70%, #7a786d 100%);
       position: relative;
       overflow: hidden;
-      height: 640px;
+      height: 760px;
     }
     .briefing-sphere-wrap {
       position: absolute;
@@ -980,14 +980,14 @@
         <span class="briefing-rivet br"></span>
       </div>
     </div>
-    <svg class="briefing-svg" viewBox="0 0 1200 640" preserveAspectRatio="xMidYMid meet">
+    <svg class="briefing-svg" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid meet">
       <defs>
         <!-- Top arc (CAUTION) — gentle upward bow -->
-        <path id="briefing-top-arc" d="M 280 218 Q 600 198 920 218" />
+        <path id="briefing-top-arc" d="M 280 220 Q 600 200 920 220" />
         <!-- Subtitle arc — wider and flatter so the longer text fits -->
-        <path id="briefing-sub-arc" d="M 140 282 Q 600 268 1060 282" />
-        <!-- Bottom arc (SYSTEM BRIEFING) — gentle downward bow -->
-        <path id="briefing-bot-arc" d="M 280 458 Q 600 480 920 458" />
+        <path id="briefing-sub-arc" d="M 140 284 Q 600 270 1060 284" />
+        <!-- Bottom arc (SYSTEM BRIEFING) — pushed further down -->
+        <path id="briefing-bot-arc" d="M 280 600 Q 600 622 920 600" />
       </defs>
       <text class="svg-headline">
         <textPath href="#briefing-top-arc" startOffset="50%" text-anchor="middle">CAUTION</textPath>
