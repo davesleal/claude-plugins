@@ -355,21 +355,81 @@
       line-height: 1.7;
     }
 
-    /* ── Vitals (canvas with full continuous ECG lines) ── */
+    /* ── Vitals (HTML lanes with animated SVG EKG line) ── */
     .vitals-monitor {
-      position: relative;
       width: 100%;
-      height: 480px;
       background: #000;
       border: 1px solid rgba(84,104,183,0.4);
       border-radius: 4px;
       overflow: hidden;
     }
-    #vitals-canvas {
-      display: block;
+    .vital-lane {
+      display: flex;
+      align-items: stretch;
+      height: 78px;
+      border-bottom: 2px solid #000;
+    }
+    .vital-lane:last-child { border-bottom: none; }
+    .vital-lane-label {
+      width: 200px;
+      flex-shrink: 0;
+      padding: 0 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-family: 'Agdasima', 'IBM Plex Sans Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1.5px;
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+    .vital-lane.l-cardio .vital-lane-label     { background: #3aa9b8; }
+    .vital-lane.l-metabolic .vital-lane-label  { background: #c92020; }
+    .vital-lane.l-cns .vital-lane-label        { background: #1f7a6e; }
+    .vital-lane.l-pulmonary .vital-lane-label  { background: #5d8db5; }
+    .vital-lane.l-systems .vital-lane-label    { background: #c92020; }
+    .vital-lane.l-locomotor .vital-lane-label  { background: #7e7d2a; }
+    .vital-lane-graph {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+    .vital-lane-graph svg {
       width: 100%;
       height: 100%;
+      display: block;
     }
+    .ekg-line {
+      stroke: #ffffff;
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 70%, rgba(0,0,0,1) 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 70%, rgba(0,0,0,1) 100%);
+      mask-size: 400px 100%;
+      -webkit-mask-size: 400px 100%;
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      animation: ekg-draw 4s linear infinite, ekg-mask 4s linear infinite;
+      filter: drop-shadow(0 0 4px rgba(255,255,255,0.4));
+    }
+    @keyframes ekg-draw {
+      from { stroke-dashoffset: 2000; }
+      to { stroke-dashoffset: -2000; }
+    }
+    @keyframes ekg-mask {
+      from { mask-position: -400px 0; -webkit-mask-position: -400px 0; }
+      to { mask-position: 1000px 0; -webkit-mask-position: 1000px 0; }
+    }
+    /* Stagger animations so each lane has its own beat offset */
+    .vital-lane.l-cardio    .ekg-line { animation-duration: 4.2s, 4.2s; }
+    .vital-lane.l-metabolic .ekg-line { animation-duration: 3.0s, 3.0s; }
+    .vital-lane.l-cns       .ekg-line { animation-duration: 4.8s, 4.8s; }
+    .vital-lane.l-pulmonary .ekg-line { animation-duration: 3.6s, 3.6s; }
+    .vital-lane.l-systems   .ekg-line { animation-duration: 4.0s, 4.0s; }
+    .vital-lane.l-locomotor .ekg-line { animation-duration: 2.6s, 2.6s; }
 
     /* ── IBM CRT Screen (install section) ── */
     .ibm-section {
@@ -1035,7 +1095,66 @@
   <section>
     <div class="section-label">Systems Operational</div>
     <div class="vitals-monitor">
-      <canvas id="vitals-canvas"></canvas>
+      <div class="vital-lane l-cardio">
+        <div class="vital-lane-label">Cardio<br>Vascular</div>
+        <div class="vital-lane-graph">
+          <svg viewBox="0 0 1000 112" width="100%" preserveAspectRatio="none">
+            <g transform="translate(0, 78)">
+              <path class="ekg-line" d="M 0,0 L 50,0 C 58,-15 62,-15 70,0 L 85,0 L 90,20 L 95,-75 L 100,30 L 105,0 L 120,-2 C 125,-5 130,-20 135,-20 L 150,-20 C 150,-20 155,-20, 165,0 L 250,0 C 258,-15 262,-15 270,0 L 285,0 L 290,20 L 295,-75 L 300,30 L 305,0 L 320,-2 C 325,-5 330,-20 335,-20 L 350,-20 C 350,-20 355,-20, 365,0 L 500,0 C 508,-15 512,-15 520,0 L 535,0 L 540,20 L 545,-75 L 550,30 L 555,0 L 570,-2 C 575,-5 580,-20 585,-20 L 600,-20 C 600,-20 605,-20, 615,0 L 750,0 C 758,-15 762,-15 770,0 L 785,0 L 790,20 L 795,-75 L 800,30 L 805,0 L 820,-2 C 825,-5 830,-20 835,-20 L 850,-20 C 850,-20 855,-20, 865,0 L 1000,0" fill="none" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="vital-lane l-metabolic">
+        <div class="vital-lane-label">Metabolic<br>Levels</div>
+        <div class="vital-lane-graph">
+          <svg viewBox="0 0 1000 112" width="100%" preserveAspectRatio="none">
+            <g transform="translate(0, 78)">
+              <path class="ekg-line" d="M 0,0 L 50,0 C 58,-15 62,-15 70,0 L 85,0 L 90,20 L 95,-75 L 100,30 L 105,0 L 120,-2 C 125,-5 130,-20 135,-20 L 150,-20 C 150,-20 155,-20, 165,0 L 250,0 C 258,-15 262,-15 270,0 L 285,0 L 290,20 L 295,-75 L 300,30 L 305,0 L 320,-2 C 325,-5 330,-20 335,-20 L 350,-20 C 350,-20 355,-20, 365,0 L 500,0 C 508,-15 512,-15 520,0 L 535,0 L 540,20 L 545,-75 L 550,30 L 555,0 L 570,-2 C 575,-5 580,-20 585,-20 L 600,-20 C 600,-20 605,-20, 615,0 L 750,0 C 758,-15 762,-15 770,0 L 785,0 L 790,20 L 795,-75 L 800,30 L 805,0 L 820,-2 C 825,-5 830,-20 835,-20 L 850,-20 C 850,-20 855,-20, 865,0 L 1000,0" fill="none" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="vital-lane l-cns">
+        <div class="vital-lane-label">Central<br>Nerv. System</div>
+        <div class="vital-lane-graph">
+          <svg viewBox="0 0 1000 112" width="100%" preserveAspectRatio="none">
+            <g transform="translate(0, 78)">
+              <path class="ekg-line" d="M 0,0 L 50,0 C 58,-15 62,-15 70,0 L 85,0 L 90,20 L 95,-75 L 100,30 L 105,0 L 120,-2 C 125,-5 130,-20 135,-20 L 150,-20 C 150,-20 155,-20, 165,0 L 250,0 C 258,-15 262,-15 270,0 L 285,0 L 290,20 L 295,-75 L 300,30 L 305,0 L 320,-2 C 325,-5 330,-20 335,-20 L 350,-20 C 350,-20 355,-20, 365,0 L 500,0 C 508,-15 512,-15 520,0 L 535,0 L 540,20 L 545,-75 L 550,30 L 555,0 L 570,-2 C 575,-5 580,-20 585,-20 L 600,-20 C 600,-20 605,-20, 615,0 L 750,0 C 758,-15 762,-15 770,0 L 785,0 L 790,20 L 795,-75 L 800,30 L 805,0 L 820,-2 C 825,-5 830,-20 835,-20 L 850,-20 C 850,-20 855,-20, 865,0 L 1000,0" fill="none" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="vital-lane l-pulmonary">
+        <div class="vital-lane-label">Pulmonary<br>Function</div>
+        <div class="vital-lane-graph">
+          <svg viewBox="0 0 1000 112" width="100%" preserveAspectRatio="none">
+            <g transform="translate(0, 78)">
+              <path class="ekg-line" d="M 0,0 L 50,0 C 58,-15 62,-15 70,0 L 85,0 L 90,20 L 95,-75 L 100,30 L 105,0 L 120,-2 C 125,-5 130,-20 135,-20 L 150,-20 C 150,-20 155,-20, 165,0 L 250,0 C 258,-15 262,-15 270,0 L 285,0 L 290,20 L 295,-75 L 300,30 L 305,0 L 320,-2 C 325,-5 330,-20 335,-20 L 350,-20 C 350,-20 355,-20, 365,0 L 500,0 C 508,-15 512,-15 520,0 L 535,0 L 540,20 L 545,-75 L 550,30 L 555,0 L 570,-2 C 575,-5 580,-20 585,-20 L 600,-20 C 600,-20 605,-20, 615,0 L 750,0 C 758,-15 762,-15 770,0 L 785,0 L 790,20 L 795,-75 L 800,30 L 805,0 L 820,-2 C 825,-5 830,-20 835,-20 L 850,-20 C 850,-20 855,-20, 865,0 L 1000,0" fill="none" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="vital-lane l-systems">
+        <div class="vital-lane-label">Systems<br>Integration</div>
+        <div class="vital-lane-graph">
+          <svg viewBox="0 0 1000 112" width="100%" preserveAspectRatio="none">
+            <g transform="translate(0, 78)">
+              <path class="ekg-line" d="M 0,0 L 50,0 C 58,-15 62,-15 70,0 L 85,0 L 90,20 L 95,-75 L 100,30 L 105,0 L 120,-2 C 125,-5 130,-20 135,-20 L 150,-20 C 150,-20 155,-20, 165,0 L 250,0 C 258,-15 262,-15 270,0 L 285,0 L 290,20 L 295,-75 L 300,30 L 305,0 L 320,-2 C 325,-5 330,-20 335,-20 L 350,-20 C 350,-20 355,-20, 365,0 L 500,0 C 508,-15 512,-15 520,0 L 535,0 L 540,20 L 545,-75 L 550,30 L 555,0 L 570,-2 C 575,-5 580,-20 585,-20 L 600,-20 C 600,-20 605,-20, 615,0 L 750,0 C 758,-15 762,-15 770,0 L 785,0 L 790,20 L 795,-75 L 800,30 L 805,0 L 820,-2 C 825,-5 830,-20 835,-20 L 850,-20 C 850,-20 855,-20, 865,0 L 1000,0" fill="none" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="vital-lane l-locomotor">
+        <div class="vital-lane-label">Locomotor<br>System</div>
+        <div class="vital-lane-graph">
+          <svg viewBox="0 0 1000 112" width="100%" preserveAspectRatio="none">
+            <g transform="translate(0, 78)">
+              <path class="ekg-line" d="M 0,0 L 50,0 C 58,-15 62,-15 70,0 L 85,0 L 90,20 L 95,-75 L 100,30 L 105,0 L 120,-2 C 125,-5 130,-20 135,-20 L 150,-20 C 150,-20 155,-20, 165,0 L 250,0 C 258,-15 262,-15 270,0 L 285,0 L 290,20 L 295,-75 L 300,30 L 305,0 L 320,-2 C 325,-5 330,-20 335,-20 L 350,-20 C 350,-20 355,-20, 365,0 L 500,0 C 508,-15 512,-15 520,0 L 535,0 L 540,20 L 545,-75 L 550,30 L 555,0 L 570,-2 C 575,-5 580,-20 585,-20 L 600,-20 C 600,-20 605,-20, 615,0 L 750,0 C 758,-15 762,-15 770,0 L 785,0 L 790,20 L 795,-75 L 800,30 L 805,0 L 820,-2 C 825,-5 830,-20 835,-20 L 850,-20 C 850,-20 855,-20, 865,0 L 1000,0" fill="none" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1387,135 +1506,6 @@
       btn.addEventListener('pointerleave', function() { this.classList.remove('pressed'); });
     });
 
-    // ── Vitals: 6 lanes with full continuous ECG lines ──
-    (function() {
-      var canvas = document.getElementById('vitals-canvas');
-      if (!canvas) return;
-      var ctx = canvas.getContext('2d', { alpha: false });
-      var DPR = Math.min(2, window.devicePixelRatio || 1);
-
-      var LANES = [
-        { label:['CARDIO','VASCULAR'],     bg:'#3aa9b8', grid:'rgba(58,169,184,0.50)', hr:62 },
-        { label:['METABOLIC','LEVELS'],    bg:'#c92020', grid:'rgba(201,32,32,0.55)',  hr:88 },
-        { label:['CENTRAL','NERV. SYSTEM'],bg:'#1f7a6e', grid:'rgba(31,122,110,0.55)', hr:70 },
-        { label:['PULMONARY','FUNCTION'],  bg:'#5d8db5', grid:'rgba(93,141,181,0.50)', hr:54 },
-        { label:['SYSTEMS','INTEGRATION'], bg:'#c92020', grid:'rgba(201,32,32,0.55)',  hr:78 },
-        { label:['LOCOMOTOR','SYSTEM'],    bg:'#7e7d2a', grid:'rgba(126,125,42,0.55)', hr:96 }
-      ];
-
-      var w = 0, h = 0;
-      var tMs = 0;
-      var lastRAF = performance.now();
-
-      function resize() {
-        var r = canvas.getBoundingClientRect();
-        w = Math.max(1, Math.floor(r.width * DPR));
-        h = Math.max(1, Math.floor(r.height * DPR));
-        canvas.width = w;
-        canvas.height = h;
-      }
-
-      // ECG PQRST sample at time t (ms) within an RR interval (ms)
-      function ecg(tMs, rrMs) {
-        var QRS = 90;
-        var tQRS = 0.42 * rrMs;
-        var tP   = tQRS - 0.18 * rrMs;
-        var tT   = tQRS + 0.30 * rrMs;
-        function g(x, mu, s, amp) { return amp * Math.exp(-0.5 * Math.pow((x - mu) / s, 2)); }
-        var P = g(tMs, tP, 36, 0.12);
-        var Q = g(tMs, tQRS - 18, 16, -0.22);
-        var R = g(tMs, tQRS, 11, 1.10);
-        var S = g(tMs, tQRS + 20, 16, -0.32);
-        var T = g(tMs, tT, 60, 0.36);
-        return P + Q + R + S + T;
-      }
-
-      function frame(now) {
-        var dt = Math.min(60, now - lastRAF);
-        lastRAF = now;
-        tMs += dt;
-
-        ctx.fillStyle = '#000';
-        ctx.fillRect(0, 0, w, h);
-
-        var labelW = Math.max(160 * DPR, w * 0.18);
-        var lanes = LANES.length;
-        var gap = 4 * DPR;
-        var laneH = (h - (lanes - 1) * gap) / lanes;
-        var pxPerSec = 90 * DPR;
-        var msPerPx = 1000 / pxPerSec;
-
-        for (var i = 0; i < lanes; i++) {
-          var lane = LANES[i];
-          var y0 = i * (laneH + gap);
-          var mid = y0 + laneH / 2;
-
-          // Label block
-          ctx.fillStyle = lane.bg;
-          ctx.fillRect(0, y0, labelW, laneH);
-
-          // Label text (two lines)
-          ctx.fillStyle = '#fff';
-          ctx.font = '700 ' + (13 * DPR) + 'px "Agdasima", "IBM Plex Sans Condensed", system-ui, sans-serif';
-          ctx.textBaseline = 'middle';
-          var lineH = 16 * DPR;
-          var startY = mid - ((lane.label.length - 1) * lineH) / 2;
-          for (var li = 0; li < lane.label.length; li++) {
-            ctx.fillText(lane.label[li], 14 * DPR, startY + li * lineH);
-          }
-
-          // Grid area
-          var gx0 = labelW;
-          var gw = w - labelW;
-          ctx.fillStyle = '#000';
-          ctx.fillRect(gx0, y0, gw, laneH);
-
-          // Tinted grid
-          var cellW = 22 * DPR;
-          var cellH = laneH / 4;
-          ctx.strokeStyle = lane.grid;
-          ctx.lineWidth = 1 * DPR;
-          ctx.beginPath();
-          for (var gx = gx0; gx <= gx0 + gw; gx += cellW) {
-            ctx.moveTo(gx + 0.5, y0);
-            ctx.lineTo(gx + 0.5, y0 + laneH);
-          }
-          for (var gy = y0; gy <= y0 + laneH; gy += cellH) {
-            ctx.moveTo(gx0, gy + 0.5);
-            ctx.lineTo(gx0 + gw, gy + 0.5);
-          }
-          ctx.stroke();
-
-          // Continuous ECG line — sample across the full lane width
-          var rrMs = 60000 / lane.hr;
-          var amp = laneH * 0.40;
-          ctx.strokeStyle = 'rgba(255,255,255,0.95)';
-          ctx.lineWidth = 1.6 * DPR;
-          ctx.shadowColor = 'rgba(255,255,255,0.45)';
-          ctx.shadowBlur = 3 * DPR;
-          ctx.beginPath();
-          var stepX = 1 * DPR;
-          for (var px = 0; px <= gw; px += stepX) {
-            // map screen pixel to time, with scrolling offset
-            var tAtPx = (gw - px) * msPerPx + tMs * 0.6 + i * 1000;
-            var tInCycle = ((tAtPx % rrMs) + rrMs) % rrMs;
-            var v = ecg(tInCycle, rrMs);
-            var y = mid - v * amp;
-            if (px === 0) ctx.moveTo(gx0 + px, y);
-            else ctx.lineTo(gx0 + px, y);
-          }
-          ctx.stroke();
-          ctx.shadowBlur = 0;
-        }
-
-        requestAnimationFrame(frame);
-      }
-
-      resize();
-      window.addEventListener('resize', resize);
-      setTimeout(resize, 100);
-      requestAnimationFrame(frame);
-    })();
   </script>
 </body>
 </html>
