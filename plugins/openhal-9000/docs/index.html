@@ -460,7 +460,7 @@
       align-items: stretch;
       flex: 0 0 auto;
       padding: 0 36px; /* match .lmt-bars-area horizontal padding */
-      box-sizing: content-box;
+      box-sizing: border-box;
     }
     .lmt-label-box {
       flex: 0 0 auto;
@@ -582,8 +582,8 @@
     }
     /* Memory drain sequence copy — vertically centered over the red */
     .lmt-copy {
-      flex: 0 1 auto;
-      max-width: 320px;
+      flex: 0 0 320px;
+      width: 320px;
       align-self: center;
       font-family: 'IBM Plex Sans Condensed', sans-serif;
       font-size: 12px;
