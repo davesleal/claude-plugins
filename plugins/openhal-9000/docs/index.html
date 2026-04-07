@@ -57,16 +57,16 @@
       border-radius: 50%;
     }
 
-    /* Flicker animation when speaking */
-    @keyframes flicker {
-      0% { opacity: 1; }
-      20% { opacity: 0.65; }
-      40% { opacity: 1; }
-      60% { opacity: 0.85; }
-      80% { opacity: 1; }
-      100% { opacity: 1; }
+    /* Subtle pulse when speaking — gentle brightness + glow */
+    @keyframes hal-speak-pulse {
+      0%, 100% {
+        filter: brightness(1) drop-shadow(0 0 0 rgba(255,40,0,0));
+      }
+      50% {
+        filter: brightness(1.15) drop-shadow(0 0 18px rgba(255,30,0,0.55));
+      }
     }
-    .hal-panel.speaking { animation: flicker 0.4s infinite; }
+    .hal-panel.speaking { animation: hal-speak-pulse 1.2s ease-in-out infinite; }
 
     /* ── Housing Frame (Ryan LaBar) ── */
     /* (housing CSS removed — replaced by hal-panel.svg) */
@@ -81,13 +81,13 @@
       font-size: 32px; font-weight: 900;
       color: #e3f0f2;
       letter-spacing: 4px;
-      filter: blur(0.75px);
+      filter: blur(0.4px);
       margin: 40px 0 12px;
     }
     .hero-tagline {
       font-size: 14px;
       color: #3e6682;
-      filter: blur(0.5px);
+      filter: blur(0.25px);
       margin-bottom: 32px;
       letter-spacing: 2px;
     }
@@ -99,7 +99,7 @@
       cursor: pointer;
       background: none; border: none;
       text-transform: uppercase;
-      filter: blur(0.5px);
+      filter: blur(0.25px);
       margin-bottom: 24px;
       transition: color 0.3s;
     }
@@ -156,14 +156,14 @@
     .section-label {
       font-size: 12px; letter-spacing: 4px;
       color: #3e6682; font-weight: 700;
-      filter: blur(0.75px);
+      filter: blur(0.4px);
       margin-bottom: 24px;
     }
 
     .about-text {
       font-size: 15px; line-height: 1.8;
       color: #e3f0f2;
-      filter: blur(0.5px);
+      filter: blur(0.25px);
       max-width: 650px;
       letter-spacing: 1px;
     }
@@ -184,14 +184,14 @@
       font-size: 14px; font-weight: 700;
       color: #e3f0f2;
       letter-spacing: 2px;
-      filter: blur(0.75px);
+      filter: blur(0.4px);
       margin-bottom: 8px;
     }
     .feature-card p {
       font-size: 12px;
       color: #8899aa;
       letter-spacing: 1px;
-      filter: blur(0.5px);
+      filter: blur(0.25px);
       line-height: 1.7;
     }
 
@@ -292,13 +292,13 @@
       font-family: 'Courier New', monospace;
       font-size: 14px; color: #3e6682;
       flex-shrink: 0; width: 28px;
-      filter: blur(0.5px);
+      filter: blur(0.25px);
     }
     .step-title {
       font-size: 14px; font-weight: 700;
       color: #e3f0f2;
       letter-spacing: 2px;
-      filter: blur(0.75px);
+      filter: blur(0.4px);
       margin-bottom: 8px;
     }
     .step-code {
@@ -316,7 +316,7 @@
     .step-desc {
       font-size: 14px;
       color: #e3f0f2;
-      filter: blur(0.5px);
+      filter: blur(0.25px);
       letter-spacing: 1px;
       line-height: 1.7;
     }
@@ -337,13 +337,13 @@
     .footer-credit {
       font-size: 12px; color: #8aaecf;
       letter-spacing: 2px;
-      filter: blur(0.5px);
+      filter: blur(0.25px);
     }
     .footer-disclaimer {
       font-size: 11px; color: #6a89a8;
       margin-top: 12px;
       letter-spacing: 1px;
-      filter: blur(0.5px);
+      filter: blur(0.25px);
       text-transform: none;
       line-height: 1.6;
     }
