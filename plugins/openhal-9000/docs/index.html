@@ -211,7 +211,7 @@
       width: 100%;
       margin: 0 !important;
       padding: 0 !important;
-      background: #1a1a1a;
+      background: radial-gradient(ellipse at center, #d6d4cc 0%, #a8a59a 70%, #7a786d 100%);
       position: relative;
       overflow: hidden;
       height: 640px;
@@ -290,21 +290,21 @@
       letter-spacing: 10px;
       text-transform: uppercase;
     }
-    /* HTML body paragraph — perspective tilt to suggest dome curve */
+    /* HTML body paragraph — slight perspective tilt */
     .briefing-body {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) perspective(900px) rotateX(8deg);
+      transform: translate(-50%, -50%) perspective(1400px) rotateX(3deg);
       transform-origin: center;
-      max-width: 460px;
+      max-width: 480px;
       width: 100%;
       text-align: center;
       font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
       font-size: 12px;
       font-weight: 700;
       color: #111;
-      line-height: 1.5;
+      line-height: 1.55;
       letter-spacing: 0.4px;
       text-transform: none;
       pointer-events: auto;
@@ -963,12 +963,12 @@
     </div>
     <svg class="briefing-svg" viewBox="0 0 1200 640" preserveAspectRatio="xMidYMid meet">
       <defs>
-        <!-- Top arc (CAUTION) — bows upward at the middle, like a sphere latitude above center -->
-        <path id="briefing-top-arc" d="M 320 220 Q 600 168 880 220" />
-        <!-- Subtitle arc — slightly flatter -->
-        <path id="briefing-sub-arc" d="M 360 280 Q 600 246 840 280" />
-        <!-- Bottom arc (SYSTEM BRIEFING) — bows downward, latitude below center -->
-        <path id="briefing-bot-arc" d="M 300 460 Q 600 514 900 460" />
+        <!-- Top arc (CAUTION) — gentle upward bow -->
+        <path id="briefing-top-arc" d="M 280 218 Q 600 198 920 218" />
+        <!-- Subtitle arc — wider and flatter so the longer text fits -->
+        <path id="briefing-sub-arc" d="M 140 282 Q 600 268 1060 282" />
+        <!-- Bottom arc (SYSTEM BRIEFING) — gentle downward bow -->
+        <path id="briefing-bot-arc" d="M 280 458 Q 600 480 920 458" />
       </defs>
       <text class="svg-headline">
         <textPath href="#briefing-top-arc" startOffset="50%" text-anchor="middle">CAUTION</textPath>
