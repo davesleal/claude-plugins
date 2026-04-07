@@ -38,79 +38,55 @@
       overflow-x: hidden;
     }
 
-    /* ── HAL 9000 Eye (simplified — chrome bezel + dome + curved glare) ── */
+    /* ── HAL 9000 Eye (chrome bezel + dome + bright pupil) ── */
     .hal9000 {
       position: relative;
-      width: 150px;
-      height: 150px;
+      width: 165px;
+      height: 165px;
       margin: 0 auto;
       border-radius: 50%;
-      /* Chrome bezel ring */
-      background:
-        radial-gradient(circle at 50% 40%, #1a0508 0%, #0a0204 60%, #050102 100%),
-        linear-gradient(180deg, #d8d8d8 0%, #999 50%, #c0c0c0 100%);
-      padding: 8px;
+      background: linear-gradient(160deg, #e8e8e8 0%, #888 35%, #444 50%, #aaa 70%, #e8e8e8 100%);
       box-shadow:
-        /* outer chrome highlights */
         inset 0 2px 2px rgba(255,255,255,0.6),
         inset 0 -2px 2px rgba(0,0,0,0.35),
-        0 6px 18px rgba(0,0,0,0.7);
+        0 6px 22px rgba(0,0,0,0.7);
     }
-    /* Outer chrome bezel ring */
-    .hal9000::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: linear-gradient(160deg, #e8e8e8 0%, #888 35%, #444 50%, #aaa 70%, #e8e8e8 100%);
-      z-index: 0;
-    }
-    /* Dark dome with red glow */
+    /* Dark red dome */
     .hal9000::after {
       content: '';
       position: absolute;
-      inset: 9px;
+      inset: 10px;
       border-radius: 50%;
       background:
         radial-gradient(circle at 50% 55%,
           #ff3a00 0%,
-          #d40010 6%,
-          #660003 18%,
-          #2a0001 35%,
-          #160001 60%,
+          #d40010 5%,
+          #660003 16%,
+          #2a0001 32%,
+          #160001 55%,
           #0a0001 100%);
       box-shadow:
-        inset 0 4px 8px rgba(255,255,255,0.18),
+        inset 0 4px 8px rgba(255,255,255,0.12),
         inset 0 -3px 6px rgba(0,0,0,0.6);
       z-index: 1;
     }
-    /* Glare SVG container */
-    .hal-glare {
-      position: absolute;
-      inset: 9px;
-      border-radius: 50%;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 2;
-    }
-    .hal-glare svg { width: 100%; height: 100%; display: block; }
-    /* Bright pupil */
+    /* Bright pupil with strong glow */
     .hal-pupil {
       position: absolute;
       top: 55%; left: 50%;
-      width: 18px; height: 18px;
-      margin: -9px 0 0 -9px;
+      width: 22px; height: 22px;
+      margin: -11px 0 0 -11px;
       border-radius: 50%;
       background: radial-gradient(circle at 40% 40%,
-        #fff 0%,
-        #ffe066 22%,
-        #ffaa22 50%,
-        #ff5500 75%,
-        #cc0000 100%);
+        #fff0fc 0%,
+        #ffe091 18%,
+        #ffe26c 38%,
+        #fdd247 60%,
+        #ff7a00 100%);
       box-shadow:
-        0 0 6px rgba(255,200,40,0.9),
-        0 0 14px rgba(255,80,0,0.7),
-        0 0 22px rgba(255,0,0,0.5);
+        1px -2px 18px 6px rgba(253,210,71,0.35),
+        -1px 2px 16px 16px rgba(255,0,4,0.7),
+        0 0 40px 8px rgba(255,40,0,0.45);
       z-index: 3;
     }
 
@@ -135,10 +111,10 @@
     .hal-animation.speaking { animation: flicker 3s infinite; }
 
     /* ── Housing Frame (Ryan LaBar) ── */
-    /* Monolith ratio 1:4:9 — visible face is 4:9 (width:height) */
+    /* Monolith 1:4:9 — visible face is 4:9 (width:height) → 220 × 495 */
     .halborder {
       position: relative;
-      width: 200px; height: 450px;
+      width: 220px; height: 495px;
       margin: 0 auto;
       border-radius: 2px;
       background: linear-gradient(180deg, #AEAEAE 0%, #787878 12%, #717171 100%);
@@ -146,7 +122,7 @@
     }
     .halbox {
       position: absolute; top: 4px; left: 4px;
-      width: 192px; height: 442px;
+      width: 212px; height: 487px;
       border-radius: 1px;
       background: #1E1E1E;
       box-shadow: inset 0px 3px 5px 2px rgba(0,0,0,0.69);
@@ -156,29 +132,29 @@
       border: 1px solid #0094ce;
       border-radius: 0;
       color: #fff;
-      font-size: 26px;
+      font-size: 28px;
       font-family: 'Fjalla One', sans-serif;
-      line-height: 38px;
+      line-height: 42px;
       text-align: center;
       text-indent: 0.85em;
       -webkit-text-fill-color: transparent;
       -webkit-text-stroke-width: 1px;
       -webkit-text-stroke-color: #fff;
       position: absolute;
-      top: 14px; left: 14px;
-      width: 164px; height: 38px;
+      top: 16px; left: 16px;
+      width: 180px; height: 42px;
       z-index: 100;
       text-transform: uppercase;
     }
     .halbox .hal9000 {
       position: absolute;
-      left: 50%; bottom: 115px;
+      left: 50%; bottom: 125px;
       margin: 0;
       transform: translateX(-50%);
     }
     .speakerbox {
       position: absolute; left: 0; bottom: 0;
-      height: 100px; width: 192px;
+      height: 110px; width: 212px;
       background: #727272;
       box-shadow: inset 0px 1px 3px 0px rgba(255,254,255,0.41);
     }
@@ -505,19 +481,6 @@
       <div class="halbox">
         <div class="nameplate">HAL 9000&nbsp;&nbsp;</div>
         <div class="hal9000">
-          <div class="hal-glare">
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-              <!-- 3 curved arcs across the upper half of the dome, mimicking studio glare -->
-              <path d="M 18 32 Q 50 18 82 32" stroke="rgba(255,255,255,0.42)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-              <path d="M 22 44 Q 50 30 78 44" stroke="rgba(255,255,255,0.32)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-              <path d="M 28 54 Q 50 42 72 54" stroke="rgba(255,255,255,0.22)" stroke-width="2" fill="none" stroke-linecap="round"/>
-              <!-- subtle scattered specks -->
-              <circle cx="38" cy="74" r="0.9" fill="rgba(255,255,255,0.35)"/>
-              <circle cx="44" cy="78" r="0.7" fill="rgba(255,255,255,0.28)"/>
-              <circle cx="52" cy="76" r="0.6" fill="rgba(255,255,255,0.30)"/>
-              <circle cx="60" cy="79" r="0.7" fill="rgba(255,255,255,0.25)"/>
-            </svg>
-          </div>
           <div class="hal-pupil"></div>
           <div class="hal-animation" id="hal-animation"></div>
         </div>
