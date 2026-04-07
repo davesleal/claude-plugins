@@ -295,7 +295,12 @@
         inset 0 0 120px rgba(20,40,60,0.4);
       position: relative;
       overflow: hidden;
+      /* Fixed height so content swaps don't reflow the page */
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
     }
+    .termTextBox { flex: 1; }
     .crtScreen::before {
       content: '';
       position: absolute;
@@ -361,10 +366,13 @@
       margin-top: 28px;
     }
     .feature-btns .btn {
-      min-width: 140px;
+      min-width: 0;
       height: 48px;
       line-height: 48px;
       font-size: 11px;
+      padding: 0 22px;
+      letter-spacing: 3px;
+      flex: 0 1 auto;
     }
     .feature-btns .btn.active {
       background: linear-gradient(180deg, #b1efe1 0%, #5fbcbb 100%);
@@ -392,7 +400,7 @@
       padding: 56px 56px 48px;
     }
     .zg-headline {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: 'Eurostile', 'Eurostile LT Std', 'Microgramma', 'Bank Gothic', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: 42px;
       font-weight: 900;
       color: #fff;
@@ -403,7 +411,7 @@
       margin-bottom: 28px;
     }
     .zg-subhead {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: 'Eurostile', 'Eurostile LT Std', 'Microgramma', 'Bank Gothic', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: 22px;
       font-weight: 700;
       color: #fff;
@@ -428,7 +436,7 @@
       align-items: flex-start;
     }
     .zg-num {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: 'Eurostile', 'Eurostile LT Std', 'Microgramma', 'Bank Gothic', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: 38px;
       font-weight: 900;
       color: #fff;
@@ -439,7 +447,7 @@
       padding-top: 2px;
     }
     .zg-text {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: 'Eurostile', 'Eurostile LT Std', 'Microgramma', 'Bank Gothic', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: 14px;
       font-weight: 700;
       color: #fff;
