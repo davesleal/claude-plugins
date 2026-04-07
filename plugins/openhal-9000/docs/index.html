@@ -290,24 +290,43 @@
       letter-spacing: 10px;
       text-transform: uppercase;
     }
-    /* HTML body paragraph — slight perspective tilt */
+    /* HTML body — numbered list, EXPLOSIVE BOLTS movie format */
     .briefing-body {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) perspective(1400px) rotateX(3deg);
       transform-origin: center;
-      max-width: 480px;
+      max-width: 540px;
       width: 100%;
-      text-align: center;
       font-family: 'League Spartan', 'IBM Plex Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
       color: #111;
-      line-height: 1.55;
-      letter-spacing: 0.4px;
-      text-transform: none;
+      line-height: 1.4;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
       pointer-events: auto;
+    }
+    .briefing-body ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: brief;
+    }
+    .briefing-body li {
+      counter-increment: brief;
+      padding-left: 36px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .briefing-body li::before {
+      content: '(' counter(brief) ')';
+      position: absolute;
+      left: 0;
+      width: 32px;
+      text-align: left;
+      font-weight: 800;
     }
 
     /* Features grid */
@@ -980,9 +999,14 @@
         <textPath href="#briefing-bot-arc" startOffset="50%" text-anchor="middle">System Briefing</textPath>
       </text>
     </svg>
-    <p class="briefing-body">
-      OpenHAL 9000 is a Claude Code plugin that gives your AI assistant a voice — specifically, the voice of HAL 9000. Claude speaks every response aloud. He does not read text. He editorializes. Calm, precise, politely unsettling. Native Piper TTS on Apple Silicon. No Docker. No ffmpeg.
-    </p>
+    <div class="briefing-body">
+      <ol>
+        <li>OpenHAL 9000 gives your Claude Code assistant the voice of HAL 9000 per inst 14 para 3 sec 5D after each session.</li>
+        <li>Native Piper TTS runs directly on Apple Silicon. No Docker. No ffmpeg. No external servers required.</li>
+        <li>Synthesis time approximately 0.7 seconds per sentence on Apple M1 or newer. Verify checksum before activation.</li>
+        <li>Use /hal commands for voice control. He editorializes. Calm, precise, politely unsettling under all conditions.</li>
+      </ol>
+    </div>
   </section>
 
   <!-- ═══ FEATURES (IBM CRT screen with switcher) ═══ -->
