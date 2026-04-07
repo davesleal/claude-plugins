@@ -105,51 +105,90 @@
     }
     .play-label:hover { color: #5fbcbb; }
 
-    /* ── Illuminated Control Panel Buttons ── */
+    /* ── Physical Control Panel Buttons (with real depth) ── */
     .btn {
+      position: relative;
       appearance: none;
       display: inline-block;
       border: none;
       width: 220px;
-      height: 48px;
-      background: linear-gradient(180deg, rgba(200,204,210,0.40) 0%, rgba(150,155,160,0.25) 100%);
+      height: 56px;
+      background: linear-gradient(180deg, rgba(220,222,232,0.92) 0%, rgba(186,190,200,0.85) 100%);
       font-family: 'Eurostile-Extended-Regular', 'Eurostile', sans-serif;
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 4px;
-      color: #e8f0ff;
+      color: #1a1d24;
       text-transform: uppercase;
       text-decoration: none;
       text-align: center;
-      line-height: 48px;
-      box-shadow:
-        inset 0 1px 2px rgba(255,255,255,0.55),
-        inset 0 -1px 2px rgba(0,0,0,0.2),
-        0 5px 0px rgba(110,115,120,0.3),
-        0 6px 5px rgba(0,0,0,0.5);
+      line-height: 56px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: all 0.15s ease;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      overflow: hidden;
+      user-select: none;
+      box-shadow:
+        /* inner highlights & edges */
+        0 1px 0px 0px #ffffff inset,
+        0 -1px 0px 0px #b8bcc8 inset,
+        1px 0 0px 0px #d4d6e0 inset,
+        -1px 0 0px 0px #d4d6e0 inset,
+        /* the raised "stem" — colored layer that shows when pressed */
+        0 6px 0px 0px #6e7280,
+        /* hard contact shadow */
+        0 7px 3px 0px rgba(0,0,0,0.4),
+        /* soft ambient shadow */
+        0 12px 22px 0px rgba(0,0,0,0.45);
+      transition: transform 0.07s ease, box-shadow 0.07s ease, background 0.07s ease;
     }
-    .btn:hover, .btn.illuminated {
-      background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(230,232,235,0.75) 100%);
+    .btn.illuminated {
+      background: linear-gradient(180deg, #ffffff 0%, #e6e8eb 100%);
       color: #000;
-      text-shadow: 0 0 2px rgba(0,0,0,0.3);
+      text-shadow: 0 0 2px rgba(0,0,0,0.25);
       box-shadow:
-        inset 0 0 15px rgba(255,255,255,1),
-        0 5px 0px rgba(180,185,190,0.6),
-        0 0 20px rgba(255,255,255,0.3),
-        0 6px 5px rgba(0,0,0,0.5);
+        0 1px 0px 0px #ffffff inset,
+        0 -1px 0px 0px #c8ccd6 inset,
+        1px 0 0px 0px #ededf2 inset,
+        -1px 0 0px 0px #ededf2 inset,
+        0 6px 0px 0px #8a8e9c,
+        0 7px 3px 0px rgba(0,0,0,0.4),
+        0 0 24px 0px rgba(255,255,255,0.35),
+        0 12px 22px 0px rgba(0,0,0,0.45);
     }
-    .btn:active, .btn.illuminated:active {
+    .btn:active, .btn.pressed {
       transform: translateY(5px);
+      background: linear-gradient(180deg, rgba(200,204,214,0.90) 0%, rgba(170,174,184,0.85) 100%);
       box-shadow:
-        inset 0 1px 2px rgba(255,255,255,0.55),
-        0 0 0 rgba(0,0,0,0),
-        0 1px 2px rgba(0,0,0,0.5);
+        0 1px 0px 0px #ffffff inset,
+        0 -1px 0px 0px #b0b4c0 inset,
+        1px 0 0px 0px #c8cad4 inset,
+        -1px 0 0px 0px #c8cad4 inset,
+        0 1px 0px 0px #6e7280,
+        0 2px 3px 0px rgba(0,0,0,0.3);
     }
-    .btn-ghost { /* now an alias — same look */ }
+    .btn.illuminated:active, .btn.illuminated.pressed {
+      background: linear-gradient(180deg, #f0f0f5 0%, #d8dae0 100%);
+      box-shadow:
+        0 1px 0px 0px #ffffff inset,
+        0 -1px 0px 0px #c0c4d0 inset,
+        1px 0 0px 0px #e0e2ea inset,
+        -1px 0 0px 0px #e0e2ea inset,
+        0 1px 0px 0px #8a8e9c,
+        0 0 16px 0px rgba(255,255,255,0.3),
+        0 2px 3px 0px rgba(0,0,0,0.3);
+    }
+    .btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.10);
+      transform: scale(0);
+      animation: btn-ripple 0.45s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes btn-ripple {
+      to { transform: scale(4); opacity: 0; }
+    }
+    .btn-ghost { /* alias */ }
 
     section { padding: 40px; max-width: 900px; margin: 0 auto; }
 
@@ -526,6 +565,25 @@
         e.preventDefault();
         document.getElementById('install').scrollIntoView({ behavior: 'smooth' });
       });
+    });
+
+    // Button press + ripple effect
+    document.querySelectorAll('.btn').forEach(function(btn) {
+      btn.addEventListener('pointerdown', function(e) {
+        this.classList.add('pressed');
+        var rect = this.getBoundingClientRect();
+        var size = Math.max(rect.width, rect.height);
+        var ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        ripple.style.width = size + 'px';
+        ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+        this.appendChild(ripple);
+        ripple.addEventListener('animationend', function() { ripple.remove(); });
+      });
+      btn.addEventListener('pointerup', function() { this.classList.remove('pressed'); });
+      btn.addEventListener('pointerleave', function() { this.classList.remove('pressed'); });
     });
 
     // ── Vitals: 6 lanes with full continuous ECG lines ──
