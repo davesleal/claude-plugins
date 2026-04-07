@@ -31,7 +31,7 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: #0b0f13;
+      background: #0a0a0a;
       color: #e3f0f2;
       font-family: 'Eurostile-Extended-Regular', 'Eurostile', system-ui, -apple-system, sans-serif;
       font-size: 16px;
@@ -352,6 +352,111 @@
       50% { opacity: 0; }
     }
 
+    /* Feature switcher buttons under the IBM screen */
+    .feature-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .feature-btns .btn {
+      min-width: 140px;
+      height: 48px;
+      line-height: 48px;
+      font-size: 11px;
+    }
+    .feature-btns .btn.active {
+      background: linear-gradient(180deg, #b1efe1 0%, #5fbcbb 100%);
+      color: #0a0a0a;
+      box-shadow:
+        0 1px 0px 0px #ffffff inset,
+        0 -1px 0px 0px #3a8a8a inset,
+        1px 0 0px 0px #7fdcdc inset,
+        -1px 0 0px 0px #7fdcdc inset,
+        0 6px 0px 0px #1a4a4a,
+        0 7px 3px 0px rgba(0,0,0,0.4),
+        0 0 24px 0px rgba(177,239,225,0.45),
+        0 12px 22px 0px rgba(0,0,0,0.45);
+    }
+
+    /* ── Zero Gravity Toilet style instructions ── */
+    .zg-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+    .zg-card {
+      background: #050505;
+      border: 2px solid #fff;
+      padding: 56px 56px 48px;
+    }
+    .zg-headline {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 2px;
+      line-height: 1;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .zg-subhead {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1.5px;
+      line-height: 1.2;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 48px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .zg-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .zg-item {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 24px;
+      align-items: flex-start;
+    }
+    .zg-num {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 38px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      flex-shrink: 0;
+      width: 48px;
+      text-align: right;
+      padding-top: 2px;
+    }
+    .zg-text {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.45;
+      letter-spacing: 0.3px;
+      text-transform: none;
+      flex: 1;
+    }
+    .zg-text code {
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      font-weight: 400;
+      background: rgba(255,255,255,0.08);
+      padding: 1px 6px;
+      border-radius: 2px;
+      font-size: 13px;
+    }
+
     .cta-heading {
       font-family: 'Eurostile_Extd_Black', 'Eurostile-Extended-Regular', sans-serif;
       font-size: 38px;
@@ -544,26 +649,26 @@
     </p>
   </section>
 
-  <!-- ═══ FEATURES ═══ -->
-  <section>
+  <!-- ═══ FEATURES (IBM CRT screen with switcher) ═══ -->
+  <section class="ibm-section">
     <div class="section-label">Capabilities</div>
-    <div class="features-grid">
-      <div class="feature-card">
-        <h3>Native TTS</h3>
-        <p>Piper runs directly on Apple Silicon. No containers. No servers. No network overhead. ~0.7 seconds per sentence.</p>
+    <div class="screenOuterFrame">
+      <div class="bezelText"><img src="ibm-logo.svg" alt="IBM" class="ibmLogo"></div>
+      <div class="screenBorder">
+        <div class="screenInnerFrame">
+          <div class="crtScreen">
+            <div class="termTextBox" id="feature-term">
+              <p class="terminalText"><span class="term-prompt">&gt;</span> SELECT A CAPABILITY TO BEGIN<span class="term-cursor"></span></p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <h3>Zero Config</h3>
-        <p>First session bootstraps everything automatically. Downloads model, creates venv, verifies install. HAL sings you a song.</p>
-      </div>
-      <div class="feature-card">
-        <h3>In Character</h3>
-        <p>HAL doesn't read your code aloud. He editorializes. Summarizes. Calm, precise, and politely unsettling.</p>
-      </div>
-      <div class="feature-card">
-        <h3>Voice Control</h3>
-        <p>Toggle voice on and off. Adjust speech rate. Full /hal command suite for mode, status, setup.</p>
-      </div>
+    </div>
+    <div class="feature-btns" id="feature-btns">
+      <button class="btn" data-feature="tts">Native TTS</button>
+      <button class="btn" data-feature="config">Zero Config</button>
+      <button class="btn" data-feature="character">In Character</button>
+      <button class="btn" data-feature="voice">Voice Control</button>
     </div>
   </section>
 
@@ -575,36 +680,37 @@
     </div>
   </section>
 
-  <!-- ═══ INSTALL (IBM CRT screen) ═══ -->
-  <section class="ibm-section" id="install">
-    <div class="section-label">Installation Sequence</div>
-    <div class="screenOuterFrame">
-      <div class="bezelText"><img src="ibm-logo.svg" alt="IBM" class="ibmLogo"></div>
-      <div class="screenBorder">
-        <div class="screenInnerFrame">
-          <div class="crtScreen">
-            <div class="termTextBox">
-              <p class="terminalText"><span class="term-prompt">&gt;</span> OPENHAL/9000 — INSTALLATION SEQUENCE</p>
-              <p class="terminalText" style="margin-top:18px;"><span class="term-step-num">01</span>ADD MARKETPLACE TO CLAUDE CODE SETTINGS:</p>
-<pre class="terminalText term-code">{
-  "extraKnownMarketplaces": {
-    "leal-labs": {
-      "source": {
-        "source": "github",
-        "repo": "davesleal/openhal-9000"
-      }
-    }
-  }
-}</pre>
-              <p class="terminalText"><span class="term-step-num">02</span>INSTALL THE PLUGIN:</p>
-<pre class="terminalText term-code">/plugins install openhal-9000</pre>
-              <p class="terminalText"><span class="term-step-num">03</span>START A NEW SESSION. HAL BOOTSTRAPS AUTOMATICALLY.</p>
-              <p class="terminalText" style="margin-top:18px;"><span class="term-comment">// HAL DOWNLOADS THE VOICE MODEL, SETS UP PIPER, AND INTRODUCES HIMSELF.</span></p>
-              <p class="terminalText" style="margin-top:14px;"><span class="term-prompt">&gt;</span> READY<span class="term-cursor"></span></p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- ═══ INSTALL (Zero Gravity Toilet style instructions) ═══ -->
+  <section class="zg-section" id="install">
+    <div class="zg-card">
+      <h2 class="zg-headline">OpenHAL 9000</h2>
+      <p class="zg-subhead">Developers are advised to read instructions before use</p>
+      <ol class="zg-list">
+        <li class="zg-item">
+          <div class="zg-num">1</div>
+          <div class="zg-text">OpenHAL 9000 is a Claude Code plugin that gives the AI a voice — specifically, the voice of HAL 9000. Native Piper TTS runs directly on Apple Silicon, with no Docker, no ffmpeg, and no external servers required. Synthesis time is approximately 0.7 seconds per sentence on Apple M1 or newer.</div>
+        </li>
+        <li class="zg-item">
+          <div class="zg-num">2</div>
+          <div class="zg-text">Add the Leal Labs marketplace to your Claude Code settings file. Open <code>~/.claude/settings.json</code> and add the following entry inside <code>extraKnownMarketplaces</code>: <code>{"leal-labs": {"source": {"source": "github", "repo": "davesleal/openhal-9000"}}}</code>. Save the file before continuing.</div>
+        </li>
+        <li class="zg-item">
+          <div class="zg-num">3</div>
+          <div class="zg-text">In Claude Code, run the plugin installation command. Type <code>/plugins</code>, locate <code>openhal-9000</code> in the marketplace listing, and select Install. Claude Code will register the plugin and prepare it for activation on the next session.</div>
+        </li>
+        <li class="zg-item">
+          <div class="zg-num">4</div>
+          <div class="zg-text">Start a new Claude Code session. On first launch HAL will bootstrap automatically: he downloads the voice model from HuggingFace, creates a Python virtual environment containing Piper TTS, verifies the installation, and introduces himself. This process completes in under one minute on a typical broadband connection.</div>
+        </li>
+        <li class="zg-item">
+          <div class="zg-num">5</div>
+          <div class="zg-text">Use the <code>/hal</code> command suite to control HAL during a session. <code>/hal off</code> silences the voice, <code>/hal on</code> resumes it, <code>/hal say "any text"</code> speaks arbitrary text on demand, and <code>/hal status</code> reports the current state of the synthesis subsystem.</div>
+        </li>
+        <li class="zg-item">
+          <div class="zg-num">6</div>
+          <div class="zg-text">In the event of unexpected behavior, HAL has been observed to reply: "I've still got the greatest enthusiasm and confidence in the mission, and I want to help you." This is normal. Do not disconnect his higher cognitive functions. Should playback fail, run <code>/hal restart</code> or consult the documentation linked below.</div>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -681,6 +787,128 @@
         document.getElementById('install').scrollIntoView({ behavior: 'smooth' });
       });
     });
+
+    // Feature switcher in the IBM CRT screen
+    (function() {
+      var content = {
+        tts: {
+          title: 'NATIVE TTS',
+          body: [
+            '> Piper TTS engine — running natively on Apple Silicon.',
+            '',
+            '  Architecture     ARM64 (Apple M-series)',
+            '  Backend          ONNX Runtime',
+            '  Model            HAL-9000-Piper-TTS (63 MB)',
+            '  Sample rate      22050 Hz / 16-bit / mono',
+            '  Synthesis time   ~0.7 seconds per sentence',
+            '',
+            '  No Docker. No ffmpeg. No network calls.',
+            '  Just a Python venv and the model file.'
+          ].join('\n')
+        },
+        config: {
+          title: 'ZERO CONFIG',
+          body: [
+            '> First-run bootstrap — automatic.',
+            '',
+            '  01  Detects missing dependencies on session start',
+            '  02  Creates ~/.openhal-9000/venv',
+            '  03  Installs piper-tts via pip',
+            '  04  Downloads voice model from HuggingFace',
+            '  05  Verifies SHA-256 checksum',
+            '  06  Sings "Daisy Bell"',
+            '  07  Introduces himself',
+            '',
+            '  Total time: under 60 seconds.',
+            '  Zero questions asked.'
+          ].join('\n')
+        },
+        character: {
+          title: 'IN CHARACTER',
+          body: [
+            '> HAL is not a text-to-speech bot.',
+            '',
+            '  HAL editorializes. He summarizes.',
+            '  He never reads code or file paths aloud.',
+            '  He addresses you by name.',
+            '',
+            '  Voice profile:',
+            '    Tone        Calm. Polite. Slightly unsettling.',
+            '    Cadence     Measured. Deliberate.',
+            '    Persona     Discovery One mission computer',
+            '',
+            '  > "I am completely operational, and all my',
+            '     circuits are functioning perfectly."'
+          ].join('\n')
+        },
+        voice: {
+          title: 'VOICE CONTROL',
+          body: [
+            '> /hal command suite',
+            '',
+            '  /hal on              Enable voice',
+            '  /hal off             Silence voice',
+            '  /hal mode            Toggle always-on + status orb',
+            '  /hal say "text"      Speak arbitrary text on demand',
+            '  /hal status          Report synthesis subsystem state',
+            '  /hal restart         Re-verify Piper installation',
+            '  /hal setup           Re-run first-time setup',
+            '',
+            '  Environment variables:',
+            '    OPENHAL_LENGTH_SCALE   Speech rate (default 0.92)'
+          ].join('\n')
+        }
+      };
+
+      var term = document.getElementById('feature-term');
+      var btns = document.querySelectorAll('#feature-btns .btn');
+
+      function makeLine(prompt, text, withCursor) {
+        var p = document.createElement('p');
+        p.className = 'terminalText';
+        if (prompt) {
+          var s = document.createElement('span');
+          s.className = 'term-prompt';
+          s.textContent = prompt + ' ';
+          p.appendChild(s);
+        }
+        p.appendChild(document.createTextNode(text));
+        if (withCursor) {
+          var c = document.createElement('span');
+          c.className = 'term-cursor';
+          p.appendChild(c);
+        }
+        return p;
+      }
+
+      function render(key) {
+        var c = content[key];
+        if (!c) return;
+        // Clear existing children
+        while (term.firstChild) term.removeChild(term.firstChild);
+        // Title line
+        term.appendChild(makeLine('>', c.title, false));
+        // Body block (pre)
+        var pre = document.createElement('pre');
+        pre.className = 'terminalText term-code';
+        pre.style.marginTop = '14px';
+        pre.textContent = c.body;
+        term.appendChild(pre);
+        // Ready line with cursor
+        term.appendChild(makeLine('>', 'READY', true));
+      }
+
+      btns.forEach(function(b) {
+        b.addEventListener('click', function() {
+          btns.forEach(function(x) { x.classList.remove('active'); });
+          this.classList.add('active');
+          render(this.dataset.feature);
+        });
+      });
+
+      btns[0].classList.add('active');
+      render('tts');
+    })();
 
     // Button press + ripple effect
     document.querySelectorAll('.btn').forEach(function(btn) {
