@@ -50,6 +50,11 @@
       margin: 0 auto;
       background: url('hal-panel.svg') center/contain no-repeat;
       cursor: pointer;
+      /* Always-on ambient glow halo around the panel */
+      filter:
+        drop-shadow(0 0 22px rgba(255,180,140,0.18))
+        drop-shadow(0 0 60px rgba(255,140,90,0.14))
+        drop-shadow(0 0 110px rgba(255,100,60,0.10));
     }
     /* Click target overlay on the pupil for voice playback */
     .hal-panel-click {
@@ -60,13 +65,21 @@
       border-radius: 50%;
     }
 
-    /* Subtle pulse when speaking — gentle brightness + glow */
+    /* Subtle pulse when speaking — extends the ambient glow */
     @keyframes hal-speak-pulse {
       0%, 100% {
-        filter: brightness(1) drop-shadow(0 0 0 rgba(255,40,0,0));
+        filter:
+          brightness(1)
+          drop-shadow(0 0 22px rgba(255,180,140,0.18))
+          drop-shadow(0 0 60px rgba(255,140,90,0.14))
+          drop-shadow(0 0 110px rgba(255,100,60,0.10));
       }
       50% {
-        filter: brightness(1.15) drop-shadow(0 0 18px rgba(255,30,0,0.55));
+        filter:
+          brightness(1.15)
+          drop-shadow(0 0 24px rgba(255,120,60,0.55))
+          drop-shadow(0 0 70px rgba(255,80,30,0.35))
+          drop-shadow(0 0 130px rgba(255,40,0,0.20));
       }
     }
     .hal-panel.speaking { animation: hal-speak-pulse 1.2s ease-in-out infinite; }
