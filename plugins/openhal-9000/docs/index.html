@@ -432,98 +432,146 @@
         0 12px 22px 0px rgba(0,0,0,0.55);
     }
 
-    /* ── Logic Memory Terminal (film-accurate) ── */
+    /* ── Logic Memory Terminal (film-accurate, wide red stripe) ── */
     .lmt-section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 60px 40px;
-    }
-    .lmt-frame {
-      background: #050505;
-      border-left: 24px solid #b51818;
-      border-right: 24px solid #b51818;
-      padding: 0;
+      width: 100%;
+      margin: 0;
+      padding: 80px 0;
+      background: #000;
       position: relative;
     }
-    .lmt-headers {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      padding: 24px 32px 18px;
-      border-bottom: 1px solid rgba(181,24,24,0.4);
+    .lmt-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
     }
-    .lmt-header {
+    /* Top label boxes (4 groups) */
+    .lmt-top-labels, .lmt-bot-labels {
+      display: grid;
+      grid-template-columns: 5fr 2fr 6fr 6fr;
+      gap: 24px;
+      max-width: 70%;
+      margin: 0 auto;
+    }
+    .lmt-top-labels { margin-bottom: 32px; }
+    .lmt-bot-labels { margin-top: 32px; }
+    .lmt-label-box {
+      border: 1.5px solid #b51818;
+      height: 90px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-end;
+    }
+    .lmt-label-box .lmt-label-text {
       font-family: 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 4px;
+      letter-spacing: 2px;
       color: #ff2a2a;
       text-transform: uppercase;
+      line-height: 1.2;
       filter: blur(0.4px);
     }
-    .lmt-header.right { text-align: right; padding-right: 8%; }
-    .lmt-rows {
-      padding: 28px 32px 36px;
+    /* Wide red horizontal stripe holding the bars */
+    .lmt-stripe {
+      background: #c91515;
+      width: 100%;
+      padding: 36px 0 44px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .lmt-stripe-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      width: 100%;
+      display: flex;
+      align-items: stretch;
+      gap: 40px;
+    }
+    .lmt-bars-area {
+      flex: 0 0 70%;
+      background: #000;
+      padding: 24px 28px 30px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 18px;
     }
     .lmt-row {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 8px;
+      grid-template-columns: 5fr 2fr 6fr 6fr;
+      gap: 24px;
       align-items: end;
     }
+    .lmt-group {
+      display: grid;
+      gap: 6px;
+    }
+    .lmt-group.g5 { grid-template-columns: repeat(5, 1fr); }
+    .lmt-group.g2 { grid-template-columns: repeat(2, 1fr); }
+    .lmt-group.g6 { grid-template-columns: repeat(6, 1fr); }
     .lmt-bar {
       position: relative;
-      height: 220px;
-      max-width: 32px;
-      margin: 0 auto;
+      height: 200px;
       width: 100%;
+      max-width: 28px;
+      margin: 0 auto;
       background: linear-gradient(180deg, #ffffff 0%, #f4f4ee 30%, #e8e6dc 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 0 6px;
+      padding: 8px 0 8px;
       box-shadow:
-        /* right-side depth for 3D feel */
         4px 0 0 0 rgba(255,255,255,0.08),
         5px 0 8px rgba(0,0,0,0.5),
         inset 0 1px 0 rgba(255,255,255,1),
         inset -2px 0 4px rgba(0,0,0,0.15);
     }
     .lmt-bar .bnum {
-      font-family: 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      color: #1a1a1a;
+      font-family: 'Eurostile_Extd_Black', 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      color: #000;
       letter-spacing: 0;
     }
     .lmt-bar .blabel {
-      font-family: 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
+      font-family: 'Eurostile_Extd_Black', 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
       font-size: 8px;
-      font-weight: 700;
-      color: #555;
+      font-weight: 900;
+      color: #1a1a1a;
       letter-spacing: 0;
       line-height: 1;
       text-transform: uppercase;
     }
     .lmt-bar .blabel sup,
-    .lmt-bar .blabel sub {
-      font-size: 7px;
-    }
+    .lmt-bar .blabel sub { font-size: 7px; }
     .lmt-bar::after {
-      /* small red LED below the bar */
       content: '';
       position: absolute;
-      bottom: -14px;
+      bottom: -12px;
       left: 50%;
       transform: translateX(-50%);
       width: 8px;
-      height: 4px;
-      background: #ff2a2a;
-      box-shadow: 0 0 6px rgba(255,30,30,0.7);
+      height: 6px;
+      background: #ff3a1a;
+      box-shadow: 0 0 6px rgba(255,40,10,0.8), inset 0 0 3px rgba(255,200,180,0.6);
+    }
+    /* Memory drain sequence copy on the right of the red stripe */
+    .lmt-copy {
+      flex: 1;
+      align-self: flex-end;
+      padding-bottom: 12px;
+      font-family: 'Eurostile-Extended-Regular', 'Aldrich', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 3px;
+      line-height: 1.6;
+      text-transform: uppercase;
+      filter: blur(0.4px);
     }
 
     /* ── Zero Gravity Toilet style instructions ── */
@@ -862,41 +910,93 @@
 
   <!-- ═══ LOGIC MEMORY TERMINAL ═══ -->
   <section class="lmt-section">
-    <div class="section-label">Logic Memory Center</div>
-    <div class="lmt-frame">
-      <div class="lmt-headers">
-        <div class="lmt-header">IV-3 Logic Terminal</div>
-        <div class="lmt-header right">Memory Terminal</div>
+    <div class="lmt-inner">
+      <div class="lmt-top-labels">
+        <div class="lmt-label-box"><div class="lmt-label-text">IV-1 Logic<br>Terminal</div></div>
+        <div class="lmt-label-box"><div class="lmt-label-text">IV-2 Logic<br>Terminal</div></div>
+        <div class="lmt-label-box"><div class="lmt-label-text">IV-3 Logic<br>Terminal</div></div>
+        <div class="lmt-label-box"><div class="lmt-label-text">Memory<br>Terminal</div></div>
       </div>
-      <div class="lmt-rows">
-        <div class="lmt-row">
-          <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/<sup>1</sup>&frasl;<sub>2</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/<sup>1</sup>&frasl;<sub>2</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">MT</span></div>
+    </div>
+
+    <div class="lmt-stripe">
+      <div class="lmt-stripe-inner">
+        <div class="lmt-bars-area">
+          <div class="lmt-row">
+            <div class="lmt-group g5">
+              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">LT/<sub>1</sub></span></div>
+            </div>
+            <div class="lmt-group g2">
+              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/<sub>2</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/<sub>2</sub></span></div>
+            </div>
+            <div class="lmt-group g6">
+              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">LT/<sub>3</sub></span></div>
+            </div>
+            <div class="lmt-group g6">
+              <div class="lmt-bar"><span class="bnum">1</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">2</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">5</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">MT</span></div>
+            </div>
+          </div>
+          <div class="lmt-row">
+            <div class="lmt-group g5">
+              <div class="lmt-bar"><span class="bnum">6</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">LT/<sub>1</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">LT/<sub>1</sub></span></div>
+            </div>
+            <div class="lmt-group g2">
+              <div class="lmt-bar"><span class="bnum">3</span><span class="blabel">LT/<sub>2</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">4</span><span class="blabel">LT/<sub>2</sub></span></div>
+            </div>
+            <div class="lmt-group g6">
+              <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">11</span><span class="blabel">LT/<sub>3</sub></span></div>
+              <div class="lmt-bar"><span class="bnum">12</span><span class="blabel">LT/<sub>3</sub></span></div>
+            </div>
+            <div class="lmt-group g6">
+              <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">11</span><span class="blabel">MT</span></div>
+              <div class="lmt-bar"><span class="bnum">12</span><span class="blabel">MT</span></div>
+            </div>
+          </div>
         </div>
-        <div class="lmt-row">
-          <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">LT/<sup>1</sup>&frasl;<sub>2</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">LT/<sup>1</sup>&frasl;<sub>2</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">11</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">12</span><span class="blabel">LT/<sup>2</sup>&frasl;<sub>3</sub></span></div>
-          <div class="lmt-bar"><span class="bnum">7</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">8</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">9</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">10</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">11</span><span class="blabel">MT</span></div>
-          <div class="lmt-bar"><span class="bnum">12</span><span class="blabel">MT</span></div>
+        <div class="lmt-copy">
+          Memory drain sequence per<br>
+          instructions A&ndash;G [4 D X] and<br>
+          modification 2B [14 July '99]<br>
+          must be followed [USAA<br>
+          Computer Operations Manual]
         </div>
+      </div>
+    </div>
+
+    <div class="lmt-inner">
+      <div class="lmt-bot-labels">
+        <div class="lmt-label-box"></div>
+        <div class="lmt-label-box"></div>
+        <div class="lmt-label-box"></div>
+        <div class="lmt-label-box"></div>
       </div>
     </div>
   </section>
