@@ -50,11 +50,11 @@
       margin: 0 auto;
       background: url('hal-panel.svg') center/contain no-repeat;
       cursor: pointer;
-      /* Always-on ambient glow halo around the panel */
+      /* Always-on ambient glow halo — soft neutral light */
       filter:
-        drop-shadow(0 0 22px rgba(255,180,140,0.18))
-        drop-shadow(0 0 60px rgba(255,140,90,0.14))
-        drop-shadow(0 0 110px rgba(255,100,60,0.10));
+        drop-shadow(0 0 30px rgba(235,235,240,0.22))
+        drop-shadow(0 0 80px rgba(220,220,228,0.14))
+        drop-shadow(0 0 140px rgba(210,210,220,0.08));
     }
     /* Click target overlay on the pupil for voice playback */
     .hal-panel-click {
@@ -70,16 +70,16 @@
       0%, 100% {
         filter:
           brightness(1)
-          drop-shadow(0 0 22px rgba(255,180,140,0.18))
-          drop-shadow(0 0 60px rgba(255,140,90,0.14))
-          drop-shadow(0 0 110px rgba(255,100,60,0.10));
+          drop-shadow(0 0 30px rgba(235,235,240,0.22))
+          drop-shadow(0 0 80px rgba(220,220,228,0.14))
+          drop-shadow(0 0 140px rgba(210,210,220,0.08));
       }
       50% {
         filter:
-          brightness(1.15)
-          drop-shadow(0 0 24px rgba(255,120,60,0.55))
-          drop-shadow(0 0 70px rgba(255,80,30,0.35))
-          drop-shadow(0 0 130px rgba(255,40,0,0.20));
+          brightness(1.12)
+          drop-shadow(0 0 32px rgba(255,200,180,0.35))
+          drop-shadow(0 0 90px rgba(255,160,130,0.20))
+          drop-shadow(0 0 150px rgba(255,120,90,0.12));
       }
     }
     .hal-panel.speaking { animation: hal-speak-pulse 1.2s ease-in-out infinite; }
