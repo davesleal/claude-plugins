@@ -17,10 +17,9 @@ if [ ! -f "$MARKER_FILE" ]; then
   fi
 fi
 
-# --- Verify Piper is ready ---
-if ! bash "$PLUGIN_ROOT/scripts/hal-start.sh" 2>&1 >&2; then
-  echo "ERROR: Piper verification failed. Run /hal setup to diagnose." >&2
-  exit 1
+# --- Verify Piper is ready (non-fatal — voice is optional) ---
+if ! bash "$PLUGIN_ROOT/scripts/hal-start.sh" 2>/dev/null; then
+  echo "WARNING: Piper not ready. Voice disabled. Run /hal setup to fix." >&2
 fi
 
 # --- First-run greeting ---
